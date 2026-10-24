@@ -1,0 +1,924 @@
+{
+ "methods": [
+  {
+   "file": "app.py",
+   "name": "<module>",
+   "fullName": "app.py:<module>",
+   "signature": "",
+   "line": 1,
+   "end": 15,
+   "params": [],
+   "locals": [
+    {
+     "name": "get_user",
+     "type": "app.py:<module>.get_user",
+     "line": 5,
+     "code": "get_user"
+    },
+    {
+     "name": "request",
+     "type": "flask.py:<module>.request",
+     "line": 1,
+     "code": "request"
+    },
+    {
+     "name": "sqlite3",
+     "type": "sqlite3.py:<module>",
+     "line": 2,
+     "code": "sqlite3"
+    },
+    {
+     "name": "app",
+     "type": "ANY",
+     "line": 4,
+     "code": "app"
+    },
+    {
+     "name": "run",
+     "type": "ANY",
+     "line": 12,
+     "code": "run"
+    }
+   ],
+   "calls": [
+    {
+     "name": "<operator>.assignment",
+     "code": "request = from flask import request",
+     "line": 1,
+     "callee": "<operator>.assignment",
+     "args": [
+      "request",
+      "from flask import request"
+     ]
+    },
+    {
+     "name": "<operator>.assignment",
+     "code": "sqlite3 = import sqlite3",
+     "line": 2,
+     "callee": "<operator>.assignment",
+     "args": [
+      "sqlite3",
+      "import sqlite3"
+     ]
+    },
+    {
+     "name": "<operator>.assignment",
+     "code": "get_user = app.route(\"/u\")(def get_user(...))",
+     "line": 5,
+     "callee": "<operator>.assignment",
+     "args": [
+      "get_user",
+      "app.route(\"/u\")(def get_user(...))"
+     ]
+    },
+    {
+     "name": "<operator>.assignment",
+     "code": "run = def run(...)",
+     "line": 12,
+     "callee": "<operator>.assignment",
+     "args": [
+      "run",
+      "def run(...)"
+     ]
+    },
+    {
+     "name": "<operator>.import",
+     "code": "from flask import request",
+     "line": 1,
+     "callee": "<operator>.import",
+     "args": [
+      "flask",
+      "request"
+     ]
+    },
+    {
+     "name": "<operator>.import",
+     "code": "import sqlite3",
+     "line": 2,
+     "callee": "<operator>.import",
+     "args": [
+      "",
+      "sqlite3"
+     ]
+    },
+    {
+     "name": "",
+     "code": "app.route(\"/u\")(def get_user(...))",
+     "line": 4,
+     "callee": "<unknownFullName>",
+     "args": [
+      "def get_user(...)"
+     ]
+    },
+    {
+     "name": "route",
+     "code": "app.route(\"/u\")",
+     "line": 4,
+     "callee": "<unknownFullName>",
+     "args": [
+      "app",
+      "\"/u\""
+     ]
+    },
+    {
+     "name": "<operator>.fieldAccess",
+     "code": "app.route",
+     "line": 4,
+     "callee": "<operator>.fieldAccess",
+     "args": [
+      "app",
+      "route"
+     ]
+    }
+   ],
+   "controls": [
+    {
+     "type": "IF",
+     "code": "if ... : ...",
+     "line": 7,
+     "end": 8,
+     "cond": [
+      "not name"
+     ]
+    }
+   ],
+   "returns": [
+    {
+     "code": "return \"missing",
+     "line": 8
+    },
+    {
+     "code": "return run(q)",
+     "line": 10
+    },
+    {
+     "code": "return cur.fetchall()",
+     "line": 15
+    }
+   ]
+  },
+  {
+   "file": "app.py",
+   "name": "get_user",
+   "fullName": "app.py:<module>.get_user",
+   "signature": "",
+   "line": 5,
+   "end": 11,
+   "params": [],
+   "locals": [
+    {
+     "name": "request",
+     "type": "flask.py:<module>.request",
+     "line": 6,
+     "code": "request"
+    },
+    {
+     "name": "tmp0",
+     "type": "ANY",
+     "line": 6,
+     "code": "tmp0"
+    },
+    {
+     "name": "name",
+     "type": "flask.py:<module>.request.<member>(args).get",
+     "line": 6,
+     "code": "name"
+    },
+    {
+     "name": "q",
+     "type": "ANY",
+     "line": 9,
+     "code": "q"
+    },
+    {
+     "name": "run",
+     "type": "ANY",
+     "line": 10,
+     "code": "run"
+    }
+   ],
+   "calls": [
+    {
+     "name": "<operator>.assignment",
+     "code": "name = tmp0 = request.args\nrequest.args.get(\"name\")",
+     "line": 6,
+     "callee": "<operator>.assignment",
+     "args": [
+      "name",
+      "tmp0 = request.args\nrequest.args.get(\"name\")"
+     ]
+    },
+    {
+     "name": "<operator>.assignment",
+     "code": "q = \"SELECT * FROM u WHERE n='\" + name + \"'\"",
+     "line": 9,
+     "callee": "<operator>.assignment",
+     "args": [
+      "q",
+      "\"SELECT * FROM u WHERE n='\" + name + \"'\""
+     ]
+    },
+    {
+     "name": "<operator>.logicalNot",
+     "code": "not name",
+     "line": 7,
+     "callee": "<operator>.logicalNot",
+     "args": [
+      "name"
+     ]
+    },
+    {
+     "name": "<operator>.addition",
+     "code": "\"SELECT * FROM u WHERE n='\" + name + \"'\"",
+     "line": 9,
+     "callee": "<operator>.addition",
+     "args": [
+      "\"SELECT * FROM u WHERE n='\" + name",
+      "\"'\""
+     ]
+    },
+    {
+     "name": "run",
+     "code": "run(q)",
+     "line": 10,
+     "callee": "app.py:<module>.run",
+     "args": [
+      "q"
+     ]
+    },
+    {
+     "name": "<operator>.assignment",
+     "code": "tmp0 = request.args",
+     "line": 6,
+     "callee": "<operator>.assignment",
+     "args": [
+      "tmp0",
+      "request.args"
+     ]
+    },
+    {
+     "name": "get",
+     "code": "request.args.get(\"name\")",
+     "line": 6,
+     "callee": "flask.py:<module>.request.<member>(args).get",
+     "args": [
+      "tmp0",
+      "\"name\""
+     ]
+    },
+    {
+     "name": "<operator>.addition",
+     "code": "\"SELECT * FROM u WHERE n='\" + name",
+     "line": 9,
+     "callee": "<operator>.addition",
+     "args": [
+      "\"SELECT * FROM u WHERE n='\"",
+      "name"
+     ]
+    },
+    {
+     "name": "<operator>.fieldAccess",
+     "code": "request.args",
+     "line": 6,
+     "callee": "<operator>.fieldAccess",
+     "args": [
+      "request",
+      "args"
+     ]
+    },
+    {
+     "name": "<operator>.fieldAccess",
+     "code": "tmp0.get",
+     "line": 6,
+     "callee": "<operator>.fieldAccess",
+     "args": [
+      "tmp0",
+      "get"
+     ]
+    }
+   ],
+   "controls": [
+    {
+     "type": "IF",
+     "code": "if ... : ...",
+     "line": 7,
+     "end": 8,
+     "cond": [
+      "not name"
+     ]
+    }
+   ],
+   "returns": [
+    {
+     "code": "return \"missing",
+     "line": 8
+    },
+    {
+     "code": "return run(q)",
+     "line": 10
+    }
+   ]
+  },
+  {
+   "file": "app.py",
+   "name": "run",
+   "fullName": "app.py:<module>.run",
+   "signature": "",
+   "line": 12,
+   "end": 15,
+   "params": [
+    {
+     "name": "q",
+     "type": "ANY",
+     "order": 1
+    }
+   ],
+   "locals": [
+    {
+     "name": "sqlite3",
+     "type": "sqlite3.py:<module>",
+     "line": 13,
+     "code": "sqlite3"
+    },
+    {
+     "name": "tmp0",
+     "type": "ANY",
+     "line": 13,
+     "code": "tmp0"
+    },
+    {
+     "name": "cur",
+     "type": "ANY",
+     "line": 13,
+     "code": "cur"
+    }
+   ],
+   "calls": [
+    {
+     "name": "<operator>.assignment",
+     "code": "cur = tmp0 = sqlite3.connect(\"db\")\nsqlite3.connect(\"db\").cursor()",
+     "line": 13,
+     "callee": "<operator>.assignment",
+     "args": [
+      "cur",
+      "tmp0 = sqlite3.connect(\"db\")\nsqlite3.connect(\"db\").cursor()"
+     ]
+    },
+    {
+     "name": "execute",
+     "code": "cur.execute(q)",
+     "line": 14,
+     "callee": "<unknownFullName>",
+     "args": [
+      "cur",
+      "q"
+     ]
+    },
+    {
+     "name": "<operator>.fieldAccess",
+     "code": "cur.execute",
+     "line": 14,
+     "callee": "<operator>.fieldAccess",
+     "args": [
+      "cur",
+      "execute"
+     ]
+    },
+    {
+     "name": "fetchall",
+     "code": "cur.fetchall()",
+     "line": 15,
+     "callee": "<unknownFullName>",
+     "args": [
+      "cur"
+     ]
+    },
+    {
+     "name": "<operator>.assignment",
+     "code": "tmp0 = sqlite3.connect(\"db\")",
+     "line": 13,
+     "callee": "<operator>.assignment",
+     "args": [
+      "tmp0",
+      "sqlite3.connect(\"db\")"
+     ]
+    },
+    {
+     "name": "cursor",
+     "code": "sqlite3.connect(\"db\").cursor()",
+     "line": 13,
+     "callee": "<unknownFullName>",
+     "args": [
+      "tmp0"
+     ]
+    },
+    {
+     "name": "<operator>.fieldAccess",
+     "code": "cur.fetchall",
+     "line": 15,
+     "callee": "<operator>.fieldAccess",
+     "args": [
+      "cur",
+      "fetchall"
+     ]
+    },
+    {
+     "name": "connect",
+     "code": "sqlite3.connect(\"db\")",
+     "line": 13,
+     "callee": "sqlite3.py:<module>.connect",
+     "args": [
+      "sqlite3",
+      "\"db\""
+     ]
+    },
+    {
+     "name": "<operator>.fieldAccess",
+     "code": "tmp0.cursor",
+     "line": 13,
+     "callee": "<operator>.fieldAccess",
+     "args": [
+      "tmp0",
+      "cursor"
+     ]
+    },
+    {
+     "name": "<operator>.fieldAccess",
+     "code": "sqlite3.connect",
+     "line": 13,
+     "callee": "<operator>.fieldAccess",
+     "args": [
+      "sqlite3",
+      "connect"
+     ]
+    }
+   ],
+   "controls": [],
+   "returns": [
+    {
+     "code": "return cur.fetchall()",
+     "line": 15
+    }
+   ]
+  }
+ ],
+ "ddg": [
+  [
+   "app.py",
+   "app.py:<module>",
+   2,
+   1,
+   "import sqlite3"
+  ],
+  [
+   "app.py",
+   "app.py:<module>",
+   2,
+   1,
+   "sqlite3 = import sqlite3"
+  ],
+  [
+   "app.py",
+   "app.py:<module>.get_user",
+   6,
+   5,
+   "request.args"
+  ],
+  [
+   "app.py",
+   "app.py:<module>.get_user",
+   6,
+   5,
+   "tmp0 = request.args"
+  ],
+  [
+   "app.py",
+   "app.py:<module>.get_user",
+   6,
+   5,
+   "request.args.get(\"name\")"
+  ],
+  [
+   "app.py",
+   "app.py:<module>.get_user",
+   6,
+   5,
+   "name = tmp0 = request.args\nrequest.args.get(\"name\")"
+  ],
+  [
+   "app.py",
+   "app.py:<module>.get_user",
+   7,
+   5,
+   "not name"
+  ],
+  [
+   "app.py",
+   "app.py:<module>",
+   4,
+   1,
+   "app.route(\"/u\")"
+  ],
+  [
+   "app.py",
+   "app.py:<module>",
+   4,
+   5,
+   "app.route(\"/u\")(def get_user(...))"
+  ],
+  [
+   "app.py",
+   "app.py:<module>",
+   4,
+   1,
+   "app.route(\"/u\")(def get_user(...))"
+  ],
+  [
+   "app.py",
+   "app.py:<module>",
+   5,
+   1,
+   "get_user = app.route(\"/u\")(def get_user(...))"
+  ],
+  [
+   "app.py",
+   "app.py:<module>.run",
+   13,
+   12,
+   "sqlite3.connect(\"db\")"
+  ],
+  [
+   "app.py",
+   "app.py:<module>.run",
+   13,
+   12,
+   "tmp0 = sqlite3.connect(\"db\")"
+  ],
+  [
+   "app.py",
+   "app.py:<module>.run",
+   13,
+   12,
+   "sqlite3.connect(\"db\").cursor()"
+  ],
+  [
+   "app.py",
+   "app.py:<module>.run",
+   13,
+   12,
+   "cur = tmp0 = sqlite3.connect(\"db\")\nsqlite3.connect(\"db\").cursor()"
+  ],
+  [
+   "app.py",
+   "app.py:<module>.run",
+   14,
+   12,
+   "cur.execute(q)"
+  ],
+  [
+   "app.py",
+   "app.py:<module>.run",
+   15,
+   12,
+   "cur.fetchall()"
+  ],
+  [
+   "app.py",
+   "app.py:<module>",
+   12,
+   1,
+   "run = def run(...)"
+  ],
+  [
+   "app.py",
+   "app.py:<module>",
+   1,
+   6,
+   "request"
+  ],
+  [
+   "app.py",
+   "app.py:<module>",
+   2,
+   13,
+   "sqlite3"
+  ],
+  [
+   "app.py",
+   "app.py:<module>",
+   2,
+   1,
+   "sqlite3"
+  ],
+  [
+   "app.py",
+   "app.py:<module>",
+   5,
+   1,
+   "get_user"
+  ],
+  [
+   "app.py",
+   "app.py:<module>.get_user",
+   6,
+   5,
+   "tmp0"
+  ],
+  [
+   "app.py",
+   "app.py:<module>.get_user",
+   6,
+   7,
+   "name"
+  ],
+  [
+   "app.py",
+   "app.py:<module>.get_user",
+   7,
+   9,
+   "name"
+  ],
+  [
+   "app.py",
+   "app.py:<module>.get_user",
+   7,
+   5,
+   "name"
+  ],
+  [
+   "app.py",
+   "app.py:<module>.get_user",
+   9,
+   10,
+   "q"
+  ],
+  [
+   "app.py",
+   "app.py:<module>",
+   4,
+   1,
+   "app"
+  ],
+  [
+   "app.py",
+   "app.py:<module>",
+   12,
+   10,
+   "run"
+  ],
+  [
+   "app.py",
+   "app.py:<module>",
+   12,
+   1,
+   "run"
+  ],
+  [
+   "app.py",
+   "app.py:<module>.run",
+   13,
+   12,
+   "sqlite3"
+  ],
+  [
+   "app.py",
+   "app.py:<module>.run",
+   13,
+   12,
+   "tmp0"
+  ],
+  [
+   "app.py",
+   "app.py:<module>.run",
+   13,
+   14,
+   "cur"
+  ],
+  [
+   "app.py",
+   "app.py:<module>.run",
+   14,
+   12,
+   "q"
+  ],
+  [
+   "app.py",
+   "app.py:<module>.run",
+   14,
+   15,
+   "cur"
+  ],
+  [
+   "app.py",
+   "app.py:<module>.run",
+   15,
+   12,
+   "cur"
+  ],
+  [
+   "app.py",
+   "app.py:<module>",
+   1,
+   12,
+   ""
+  ],
+  [
+   "app.py",
+   "app.py:<module>",
+   1,
+   5,
+   ""
+  ],
+  [
+   "app.py",
+   "app.py:<module>",
+   1,
+   4,
+   ""
+  ],
+  [
+   "app.py",
+   "app.py:<module>",
+   1,
+   2,
+   ""
+  ],
+  [
+   "app.py",
+   "app.py:<module>.get_user",
+   5,
+   6,
+   ""
+  ],
+  [
+   "app.py",
+   "app.py:<module>.get_user",
+   5,
+   10,
+   ""
+  ],
+  [
+   "app.py",
+   "app.py:<module>.get_user",
+   5,
+   9,
+   ""
+  ],
+  [
+   "app.py",
+   "app.py:<module>.get_user",
+   5,
+   7,
+   ""
+  ],
+  [
+   "app.py",
+   "app.py:<module>.get_user",
+   5,
+   8,
+   ""
+  ],
+  [
+   "app.py",
+   "app.py:<module>.run",
+   12,
+   13,
+   ""
+  ],
+  [
+   "app.py",
+   "app.py:<module>.run",
+   12,
+   14,
+   ""
+  ],
+  [
+   "app.py",
+   "app.py:<module>.run",
+   12,
+   15,
+   ""
+  ],
+  [
+   "app.py",
+   "app.py:<module>.run",
+   12,
+   14,
+   "q"
+  ],
+  [
+   "app.py",
+   "app.py:<module>",
+   5,
+   4,
+   "def get_user(...)"
+  ],
+  [
+   "app.py",
+   "app.py:<module>.get_user",
+   8,
+   5,
+   "<RET>"
+  ],
+  [
+   "app.py",
+   "app.py:<module>.get_user",
+   10,
+   5,
+   "<RET>"
+  ],
+  [
+   "app.py",
+   "app.py:<module>.run",
+   15,
+   12,
+   "<RET>"
+  ]
+ ],
+ "cdg": [
+  [
+   "app.py",
+   "app.py:<module>.get_user",
+   7,
+   8
+  ],
+  [
+   "app.py",
+   "app.py:<module>.get_user",
+   7,
+   9
+  ],
+  [
+   "app.py",
+   "app.py:<module>.get_user",
+   7,
+   10
+  ]
+ ],
+ "flows": [
+  [
+   [
+    "app.py",
+    6,
+    "request.args.get(\"name\")"
+   ],
+   [
+    "app.py",
+    7,
+    "name"
+   ],
+   [
+    "app.py",
+    9,
+    "\"SELECT * FROM u WHERE n='\" + name + \"'\""
+   ],
+   [
+    "app.py",
+    10,
+    "q"
+   ],
+   [
+    "app.py",
+    12,
+    "q"
+   ],
+   [
+    "app.py",
+    14,
+    "q"
+   ]
+  ],
+  [
+   [
+    "app.py",
+    6,
+    "request.args"
+   ],
+   [
+    "app.py",
+    7,
+    "name"
+   ],
+   [
+    "app.py",
+    9,
+    "\"SELECT * FROM u WHERE n='\" + name + \"'\""
+   ],
+   [
+    "app.py",
+    10,
+    "q"
+   ],
+   [
+    "app.py",
+    12,
+    "q"
+   ],
+   [
+    "app.py",
+    14,
+    "q"
+   ]
+  ]
+ ]
+}

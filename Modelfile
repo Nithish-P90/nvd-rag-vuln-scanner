@@ -1,0 +1,30 @@
+# Modelfile for the finetuned Validation Agent
+#
+# Build:
+#   ollama create validation-agent -f Modelfile
+#
+# The TEMPLATE must reproduce the exact Alpaca format used in finetune.py's
+# format_alpaca(). Training saw no chat template and no system prompt, so the
+# chat API's user message is mapped straight into "### Instruction:". Changing
+# this format silently degrades accuracy — inference would no longer match
+# training.
+
+# Ollama imports HF safetensors directly for Llama architectures, so the
+# llama.cpp GGUF conversion (which needs a source build on Windows) is not
+# required. This directory is the merged fp16 model from finetune.py.
+FROM ./validation_agent_merged
+
+TEMPLATE """### Instruction:
+{{ .Prompt }}
+
+### Response:
+"""
+
+# Deterministic: this is a classifier, not a chat model.
+PARAMETER temperature 0
+PARAMETER top_p 1
+PARAMETER num_ctx 2048
+
+# Stop before the model starts hallucinating a follow-up example.
+PARAMETER stop "### Instruction:"
+PARAMETER stop "### Response:"

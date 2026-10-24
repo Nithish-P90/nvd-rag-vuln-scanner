@@ -1,0 +1,24 @@
+# Secrets
+.env
+*.env
+!.env.example
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Generated / large artifacts (rebuilt by the steps in README.md)
+qdrant_storage/
+validation_agent_merged/
+unsloth_compiled_cache/
+
+# Backups and editor/OS files
+*.bak
+*.bak2
+.vscode/
+.DS_Store
+._*
+$RECYCLE.BIN/
+System Volume Information/

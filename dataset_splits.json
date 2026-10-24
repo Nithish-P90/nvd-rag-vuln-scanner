@@ -1,0 +1,190 @@
+{
+  "train": [
+    {
+      "instruction": "You are a senior security engineer performing validation review.\n\nCode:\n```\nvoid copy_data(char *src, int validated) {\n    char buf[64];\n    if (validated) strcpy(buf, src);\n}\n```\n\nFinding to validate:\n{\n  \"category\": \"Buffer Overflow\",\n  \"cwe_ids\": [\n    \"CWE-120\"\n  ],\n  \"cwe_id\": \"CWE-120\",\n  \"affected_code\": \"strcpy(buf, src)\",\n  \"source\": \"manual\"\n}\n\nDetermine if this finding is:\n- CONFIRMED: genuinely present and exploitable in this specific code\n- FALSE_POSITIVE: pattern matched but not actually exploitable in context\n- NEEDS_CONTEXT: might be vulnerable but requires more context to confirm\n\nRespond with a JSON object:\n{\"verdict\": \"CONFIRMED|FALSE_POSITIVE|NEEDS_CONTEXT\", \"reasoning\": \"one sentence\"}",
+      "output": "{\"verdict\": \"NEEDS_CONTEXT\", \"reasoning\": \"strcpy guarded by validated flag \\u2014 exploitability depends on whether caller reliably enforces that src length fits in buf\"}",
+      "source": "manual",
+      "cwe_id": "CWE-120",
+      "verdict": "NEEDS_CONTEXT"
+    },
+    {
+      "instruction": "You are a senior security engineer performing validation review.\n\nCode:\n```\nimport xml.etree.ElementTree as ET\ndef parse_config() -> ET.Element:\n    tree = ET.parse(\"config.xml\")\n    return tree.getroot()\n```\n\nFinding to validate:\n{\n  \"category\": \"XXE\",\n  \"cwe_ids\": [\n    \"CWE-611\"\n  ],\n  \"cwe_id\": \"CWE-611\",\n  \"affected_code\": \"ET.parse(...)\",\n  \"source\": \"manual\"\n}\n\nDetermine if this finding is:\n- CONFIRMED: genuinely present and exploitable in this specific code\n- FALSE_POSITIVE: pattern matched but not actually exploitable in context\n- NEEDS_CONTEXT: might be vulnerable but requires more context to confirm\n\nRespond with a JSON object:\n{\"verdict\": \"CONFIRMED|FALSE_POSITIVE|NEEDS_CONTEXT\", \"reasoning\": \"one sentence\"}",
+      "output": "{\"verdict\": \"FALSE_POSITIVE\", \"reasoning\": \"Parsing a hardcoded local config file \\u2014 no external or user-supplied XML input involved\"}",
+      "source": "manual",
+      "cwe_id": "CWE-611",
+      "verdict": "FALSE_POSITIVE"
+    },
+    {
+      "instruction": "You are a senior security engineer performing validation review.\n\nCode:\n```\ndef process_file(filename: str):\n    safe_name = sanitize(filename)\n    return open(\"/uploads/\" + safe_name).read()\n```\n\nFinding to validate:\n{\n  \"category\": \"Path Traversal\",\n  \"cwe_ids\": [\n    \"CWE-22\"\n  ],\n  \"cwe_id\": \"CWE-22\",\n  \"affected_code\": \"\\\"/uploads/\\\" + safe_name\",\n  \"source\": \"manual\"\n}\n\nDetermine if this finding is:\n- CONFIRMED: genuinely present and exploitable in this specific code\n- FALSE_POSITIVE: pattern matched but not actually exploitable in context\n- NEEDS_CONTEXT: might be vulnerable but requires more context to confirm\n\nRespond with a JSON object:\n{\"verdict\": \"CONFIRMED|FALSE_POSITIVE|NEEDS_CONTEXT\", \"reasoning\": \"one sentence\"}",
+      "output": "{\"verdict\": \"NEEDS_CONTEXT\", \"reasoning\": \"Path constructed from sanitized filename \\u2014 exploitability depends on whether sanitize() correctly blocks path traversal sequences\"}",
+      "source": "manual",
+      "cwe_id": "CWE-22",
+      "verdict": "NEEDS_CONTEXT"
+    },
+    {
+      "instruction": "You are a senior security engineer performing validation review.\n\nCode:\n```\nvoid run_cmd(char *filename) {\n    char cmd[256];\n    sprintf(cmd, \"cat %s\", filename);\n    system(cmd);\n}\n```\n\nFinding to validate:\n{\n  \"category\": \"Command Injection\",\n  \"cwe_ids\": [\n    \"CWE-78\"\n  ],\n  \"cwe_id\": \"CWE-78\",\n  \"affected_code\": \"system(cmd) with unsanitized filename\",\n  \"source\": \"manual\"\n}\n\nDetermine if this finding is:\n- CONFIRMED: genuinely present and exploitable in this specific code\n- FALSE_POSITIVE: pattern matched but not actually exploitable in context\n- NEEDS_CONTEXT: might be vulnerable but requires more context to confirm\n\nRespond with a JSON object:\n{\"verdict\": \"CONFIRMED|FALSE_POSITIVE|NEEDS_CONTEXT\", \"reasoning\": \"one sentence\"}",
+      "output": "{\"verdict\": \"CONFIRMED\", \"reasoning\": \"filename is unsanitized and injected into a shell command \\u2014 attacker can append ; rm -rf / or similar\"}",
+      "source": "manual",
+      "cwe_id": "CWE-78",
+      "verdict": "CONFIRMED"
+    },
+    {
+      "instruction": "You are a senior security engineer performing validation review.\n\nCode:\n```\nimport random\ndef pick_color() -> str:\n    colors = [\"red\", \"green\", \"blue\"]\n    return random.choice(colors)\n```\n\nFinding to validate:\n{\n  \"category\": \"Weak PRNG\",\n  \"cwe_ids\": [\n    \"CWE-338\"\n  ],\n  \"cwe_id\": \"CWE-338\",\n  \"affected_code\": \"random.choice(...)\",\n  \"source\": \"manual\"\n}\n\nDetermine if this finding is:\n- CONFIRMED: genuinely present and exploitable in this specific code\n- FALSE_POSITIVE: pattern matched but not actually exploitable in context\n- NEEDS_CONTEXT: might be vulnerable but requires more context to confirm\n\nRespond with a JSON object:\n{\"verdict\": \"CONFIRMED|FALSE_POSITIVE|NEEDS_CONTEXT\", \"reasoning\": \"one sentence\"}",
+      "output": "{\"verdict\": \"FALSE_POSITIVE\", \"reasoning\": \"random.choice used for non-security UI color selection \\u2014 cryptographic randomness is not required here\"}",
+      "source": "manual",
+      "cwe_id": "CWE-338",
+      "verdict": "FALSE_POSITIVE"
+    },
+    {
+      "instruction": "You are a senior security engineer performing validation review.\n\nCode:\n```\nvoid log_input(char *user_input) {\n    printf(user_input);\n}\n```\n\nFinding to validate:\n{\n  \"category\": \"Format String\",\n  \"cwe_ids\": [\n    \"CWE-134\"\n  ],\n  \"cwe_id\": \"CWE-134\",\n  \"affected_code\": \"printf(user_input)\",\n  \"source\": \"manual\"\n}\n\nDetermine if this finding is:\n- CONFIRMED: genuinely present and exploitable in this specific code\n- FALSE_POSITIVE: pattern matched but not actually exploitable in context\n- NEEDS_CONTEXT: might be vulnerable but requires more context to confirm\n\nRespond with a JSON object:\n{\"verdict\": \"CONFIRMED|FALSE_POSITIVE|NEEDS_CONTEXT\", \"reasoning\": \"one sentence\"}",
+      "output": "{\"verdict\": \"CONFIRMED\", \"reasoning\": \"User-controlled string passed as printf format argument \\u2014 attacker can read stack memory or execute arbitrary code with %n\"}",
+      "source": "manual",
+      "cwe_id": "CWE-134",
+      "verdict": "CONFIRMED"
+    },
+    {
+      "instruction": "You are a senior security engineer performing validation review.\n\nCode:\n```\nvoid increment(int *counter) {\n    pthread_mutex_lock(&mtx);\n    (*counter)++;\n    pthread_mutex_unlock(&mtx);\n}\n```\n\nFinding to validate:\n{\n  \"category\": \"Race Condition\",\n  \"cwe_ids\": [\n    \"CWE-362\"\n  ],\n  \"cwe_id\": \"CWE-362\",\n  \"affected_code\": \"counter++ in thread\",\n  \"source\": \"manual\"\n}\n\nDetermine if this finding is:\n- CONFIRMED: genuinely present and exploitable in this specific code\n- FALSE_POSITIVE: pattern matched but not actually exploitable in context\n- NEEDS_CONTEXT: might be vulnerable but requires more context to confirm\n\nRespond with a JSON object:\n{\"verdict\": \"CONFIRMED|FALSE_POSITIVE|NEEDS_CONTEXT\", \"reasoning\": \"one sentence\"}",
+      "output": "{\"verdict\": \"FALSE_POSITIVE\", \"reasoning\": \"Counter modification is properly protected by mutex lock/unlock \\u2014 race condition is prevented\"}",
+      "source": "manual",
+      "cwe_id": "CWE-362",
+      "verdict": "FALSE_POSITIVE"
+    },
+    {
+      "instruction": "You are a senior security engineer performing validation review.\n\nCode:\n```\nimport requests\ndef fetch_data(url):\n    response = requests.get(url, verify=False)\n    return response.json()\n```\n\nFinding to validate:\n{\n  \"category\": \"SSL Verification Disabled\",\n  \"cwe_ids\": [\n    \"CWE-295\"\n  ],\n  \"cwe_id\": \"CWE-295\",\n  \"affected_code\": \"verify=False\",\n  \"source\": \"manual\"\n}\n\nDetermine if this finding is:\n- CONFIRMED: genuinely present and exploitable in this specific code\n- FALSE_POSITIVE: pattern matched but not actually exploitable in context\n- NEEDS_CONTEXT: might be vulnerable but requires more context to confirm\n\nRespond with a JSON object:\n{\"verdict\": \"CONFIRMED|FALSE_POSITIVE|NEEDS_CONTEXT\", \"reasoning\": \"one sentence\"}",
+      "output": "{\"verdict\": \"CONFIRMED\", \"reasoning\": \"Disabling SSL certificate verification allows man-in-the-middle attacks on all HTTPS connections made by this function\"}",
+      "source": "manual",
+      "cwe_id": "CWE-295",
+      "verdict": "CONFIRMED"
+    },
+    {
+      "instruction": "You are a senior security engineer performing validation review.\n\nCode:\n```\ndef get_user(user_id: int):\n    query = \"SELECT * FROM users WHERE id = %s\"\n    cursor.execute(query, (user_id,))\n    return cursor.fetchone()\n```\n\nFinding to validate:\n{\n  \"category\": \"SQL Injection\",\n  \"cwe_ids\": [\n    \"CWE-89\"\n  ],\n  \"cwe_id\": \"CWE-89\",\n  \"affected_code\": \"cursor.execute\",\n  \"source\": \"manual\"\n}\n\nDetermine if this finding is:\n- CONFIRMED: genuinely present and exploitable in this specific code\n- FALSE_POSITIVE: pattern matched but not actually exploitable in context\n- NEEDS_CONTEXT: might be vulnerable but requires more context to confirm\n\nRespond with a JSON object:\n{\"verdict\": \"CONFIRMED|FALSE_POSITIVE|NEEDS_CONTEXT\", \"reasoning\": \"one sentence\"}",
+      "output": "{\"verdict\": \"FALSE_POSITIVE\", \"reasoning\": \"Parameterized query with %s placeholder and separate parameter tuple correctly prevents SQL injection\"}",
+      "source": "manual",
+      "cwe_id": "CWE-89",
+      "verdict": "FALSE_POSITIVE"
+    },
+    {
+      "instruction": "You are a senior security engineer performing validation review.\n\nCode:\n```\ndef get_user(username):\n    query = \"SELECT * FROM users WHERE name = '\" + username + \"'\"\n    cursor.execute(query)\n    return cursor.fetchall()\n```\n\nFinding to validate:\n{\n  \"category\": \"SQL Injection\",\n  \"cwe_ids\": [\n    \"CWE-89\"\n  ],\n  \"cwe_id\": \"CWE-89\",\n  \"affected_code\": \"string concatenation into SQL\",\n  \"source\": \"manual\"\n}\n\nDetermine if this finding is:\n- CONFIRMED: genuinely present and exploitable in this specific code\n- FALSE_POSITIVE: pattern matched but not actually exploitable in context\n- NEEDS_CONTEXT: might be vulnerable but requires more context to confirm\n\nRespond with a JSON object:\n{\"verdict\": \"CONFIRMED|FALSE_POSITIVE|NEEDS_CONTEXT\", \"reasoning\": \"one sentence\"}",
+      "output": "{\"verdict\": \"CONFIRMED\", \"reasoning\": \"Username concatenated directly into SQL string with no parameterization \\u2014 trivially exploitable with ' OR '1'='1\"}",
+      "source": "manual",
+      "cwe_id": "CWE-89",
+      "verdict": "CONFIRMED"
+    },
+    {
+      "instruction": "You are a senior security engineer performing validation review.\n\nCode:\n```\nimport os\ndef ping_host(host):\n    os.system(\"ping -c 4 \" + host)\n```\n\nFinding to validate:\n{\n  \"category\": \"Command Injection\",\n  \"cwe_ids\": [\n    \"CWE-78\"\n  ],\n  \"cwe_id\": \"CWE-78\",\n  \"affected_code\": \"os.system with user-supplied host\",\n  \"source\": \"manual\"\n}\n\nDetermine if this finding is:\n- CONFIRMED: genuinely present and exploitable in this specific code\n- FALSE_POSITIVE: pattern matched but not actually exploitable in context\n- NEEDS_CONTEXT: might be vulnerable but requires more context to confirm\n\nRespond with a JSON object:\n{\"verdict\": \"CONFIRMED|FALSE_POSITIVE|NEEDS_CONTEXT\", \"reasoning\": \"one sentence\"}",
+      "output": "{\"verdict\": \"CONFIRMED\", \"reasoning\": \"host is user-supplied and concatenated into a shell command \\u2014 attacker can append ; malicious_command\"}",
+      "source": "manual",
+      "cwe_id": "CWE-78",
+      "verdict": "CONFIRMED"
+    },
+    {
+      "instruction": "You are a senior security engineer performing validation review.\n\nCode:\n```\nimport random\ndef generate_token():\n    return str(random.random())\n```\n\nFinding to validate:\n{\n  \"category\": \"Weak PRNG\",\n  \"cwe_ids\": [\n    \"CWE-338\"\n  ],\n  \"cwe_id\": \"CWE-338\",\n  \"affected_code\": \"random.random()\",\n  \"source\": \"manual\"\n}\n\nDetermine if this finding is:\n- CONFIRMED: genuinely present and exploitable in this specific code\n- FALSE_POSITIVE: pattern matched but not actually exploitable in context\n- NEEDS_CONTEXT: might be vulnerable but requires more context to confirm\n\nRespond with a JSON object:\n{\"verdict\": \"CONFIRMED|FALSE_POSITIVE|NEEDS_CONTEXT\", \"reasoning\": \"one sentence\"}",
+      "output": "{\"verdict\": \"CONFIRMED\", \"reasoning\": \"random.random() is not cryptographically secure \\u2014 output is predictable from seed, unsuitable for security tokens\"}",
+      "source": "manual",
+      "cwe_id": "CWE-338",
+      "verdict": "CONFIRMED"
+    },
+    {
+      "instruction": "You are a senior security engineer performing validation review.\n\nCode:\n```\nimport hashlib\ndef get_file_hash(filepath: str) -> str:\n    with open(filepath, 'rb') as f:\n        return hashlib.md5(f.read()).hexdigest()\n```\n\nFinding to validate:\n{\n  \"category\": \"Weak Cryptography\",\n  \"cwe_ids\": [\n    \"CWE-327\"\n  ],\n  \"cwe_id\": \"CWE-327\",\n  \"affected_code\": \"hashlib.md5(...)\",\n  \"source\": \"manual\"\n}\n\nDetermine if this finding is:\n- CONFIRMED: genuinely present and exploitable in this specific code\n- FALSE_POSITIVE: pattern matched but not actually exploitable in context\n- NEEDS_CONTEXT: might be vulnerable but requires more context to confirm\n\nRespond with a JSON object:\n{\"verdict\": \"CONFIRMED|FALSE_POSITIVE|NEEDS_CONTEXT\", \"reasoning\": \"one sentence\"}",
+      "output": "{\"verdict\": \"FALSE_POSITIVE\", \"reasoning\": \"MD5 used for file integrity checksumming not password hashing \\u2014 acceptable non-security use of MD5\"}",
+      "source": "manual",
+      "cwe_id": "CWE-327",
+      "verdict": "FALSE_POSITIVE"
+    },
+    {
+      "instruction": "You are a senior security engineer performing validation review.\n\nCode:\n```\nvoid allocate(unsigned int n) {\n    char *buf = malloc(n * sizeof(char));\n    memcpy(buf, src, n);\n}\n```\n\nFinding to validate:\n{\n  \"category\": \"Integer Overflow\",\n  \"cwe_ids\": [\n    \"CWE-190\",\n    \"CWE-122\"\n  ],\n  \"cwe_id\": \"CWE-190\",\n  \"affected_code\": \"malloc(n * sizeof(char))\",\n  \"source\": \"manual\"\n}\n\nDetermine if this finding is:\n- CONFIRMED: genuinely present and exploitable in this specific code\n- FALSE_POSITIVE: pattern matched but not actually exploitable in context\n- NEEDS_CONTEXT: might be vulnerable but requires more context to confirm\n\nRespond with a JSON object:\n{\"verdict\": \"CONFIRMED|FALSE_POSITIVE|NEEDS_CONTEXT\", \"reasoning\": \"one sentence\"}",
+      "output": "{\"verdict\": \"CONFIRMED\", \"reasoning\": \"Arithmetic on user-supplied n before malloc can wrap to zero on large values, allocating a tiny buffer then overflowing it with memcpy\"}",
+      "source": "manual",
+      "cwe_id": "CWE-190",
+      "verdict": "CONFIRMED"
+    },
+    {
+      "instruction": "You are a senior security engineer performing validation review.\n\nCode:\n```\nvoid login(char *username) {\n    char buf[64];\n    strcpy(buf, username);\n    printf(\"Welcome %s\\n\", buf);\n}\n```\n\nFinding to validate:\n{\n  \"category\": \"Buffer Overflow\",\n  \"cwe_ids\": [\n    \"CWE-120\"\n  ],\n  \"cwe_id\": \"CWE-120\",\n  \"affected_code\": \"strcpy(buf, username)\",\n  \"source\": \"manual\"\n}\n\nDetermine if this finding is:\n- CONFIRMED: genuinely present and exploitable in this specific code\n- FALSE_POSITIVE: pattern matched but not actually exploitable in context\n- NEEDS_CONTEXT: might be vulnerable but requires more context to confirm\n\nRespond with a JSON object:\n{\"verdict\": \"CONFIRMED|FALSE_POSITIVE|NEEDS_CONTEXT\", \"reasoning\": \"one sentence\"}",
+      "output": "{\"verdict\": \"CONFIRMED\", \"reasoning\": \"strcpy copies unsanitized external input into a fixed 64-byte stack buffer with no bounds check \\u2014 directly exploitable\"}",
+      "source": "manual",
+      "cwe_id": "CWE-120",
+      "verdict": "CONFIRMED"
+    },
+    {
+      "instruction": "You are a senior security engineer performing validation review.\n\nCode:\n```\nimport hashlib\ndef hash_password(password):\n    return hashlib.md5(password.encode()).hexdigest()\n```\n\nFinding to validate:\n{\n  \"category\": \"Weak Cryptography\",\n  \"cwe_ids\": [\n    \"CWE-327\"\n  ],\n  \"cwe_id\": \"CWE-327\",\n  \"affected_code\": \"hashlib.md5(...)\",\n  \"source\": \"manual\"\n}\n\nDetermine if this finding is:\n- CONFIRMED: genuinely present and exploitable in this specific code\n- FALSE_POSITIVE: pattern matched but not actually exploitable in context\n- NEEDS_CONTEXT: might be vulnerable but requires more context to confirm\n\nRespond with a JSON object:\n{\"verdict\": \"CONFIRMED|FALSE_POSITIVE|NEEDS_CONTEXT\", \"reasoning\": \"one sentence\"}",
+      "output": "{\"verdict\": \"CONFIRMED\", \"reasoning\": \"MD5 is cryptographically broken \\u2014 trivially reversible via rainbow tables, unsuitable for password hashing\"}",
+      "source": "manual",
+      "cwe_id": "CWE-327",
+      "verdict": "CONFIRMED"
+    },
+    {
+      "instruction": "You are a senior security engineer performing validation review.\n\nCode:\n```\nimport pickle\ndef load_session(data):\n    return pickle.loads(data)\n```\n\nFinding to validate:\n{\n  \"category\": \"Insecure Deserialization\",\n  \"cwe_ids\": [\n    \"CWE-502\"\n  ],\n  \"cwe_id\": \"CWE-502\",\n  \"affected_code\": \"pickle.loads(data)\",\n  \"source\": \"manual\"\n}\n\nDetermine if this finding is:\n- CONFIRMED: genuinely present and exploitable in this specific code\n- FALSE_POSITIVE: pattern matched but not actually exploitable in context\n- NEEDS_CONTEXT: might be vulnerable but requires more context to confirm\n\nRespond with a JSON object:\n{\"verdict\": \"CONFIRMED|FALSE_POSITIVE|NEEDS_CONTEXT\", \"reasoning\": \"one sentence\"}",
+      "output": "{\"verdict\": \"CONFIRMED\", \"reasoning\": \"pickle.loads on untrusted data allows arbitrary code execution via crafted __reduce__ methods\"}",
+      "source": "manual",
+      "cwe_id": "CWE-502",
+      "verdict": "CONFIRMED"
+    },
+    {
+      "instruction": "You are a senior security engineer performing validation review.\n\nCode:\n```\nfrom flask import request, send_file\ndef download():\n    filename = request.args.get(\"file\")\n    return send_file(\"/var/www/files/\" + filename)\n```\n\nFinding to validate:\n{\n  \"category\": \"Path Traversal\",\n  \"cwe_ids\": [\n    \"CWE-22\"\n  ],\n  \"cwe_id\": \"CWE-22\",\n  \"affected_code\": \"\\\"/var/www/files/\\\" + filename\",\n  \"source\": \"manual\"\n}\n\nDetermine if this finding is:\n- CONFIRMED: genuinely present and exploitable in this specific code\n- FALSE_POSITIVE: pattern matched but not actually exploitable in context\n- NEEDS_CONTEXT: might be vulnerable but requires more context to confirm\n\nRespond with a JSON object:\n{\"verdict\": \"CONFIRMED|FALSE_POSITIVE|NEEDS_CONTEXT\", \"reasoning\": \"one sentence\"}",
+      "output": "{\"verdict\": \"CONFIRMED\", \"reasoning\": \"User-controlled filename concatenated to path with no sanitization \\u2014 allows ../../../etc/passwd traversal\"}",
+      "source": "manual",
+      "cwe_id": "CWE-22",
+      "verdict": "CONFIRMED"
+    },
+    {
+      "instruction": "You are a senior security engineer performing validation review.\n\nCode:\n```\nvoid process_config(void) {\n    char buf[256];\n    strcpy(buf, DEFAULT_CONFIG_PATH);\n}\n```\n\nFinding to validate:\n{\n  \"category\": \"Buffer Overflow\",\n  \"cwe_ids\": [\n    \"CWE-120\"\n  ],\n  \"cwe_id\": \"CWE-120\",\n  \"affected_code\": \"strcpy(buf, DEFAULT_CONFIG_PATH)\",\n  \"source\": \"manual\"\n}\n\nDetermine if this finding is:\n- CONFIRMED: genuinely present and exploitable in this specific code\n- FALSE_POSITIVE: pattern matched but not actually exploitable in context\n- NEEDS_CONTEXT: might be vulnerable but requires more context to confirm\n\nRespond with a JSON object:\n{\"verdict\": \"CONFIRMED|FALSE_POSITIVE|NEEDS_CONTEXT\", \"reasoning\": \"one sentence\"}",
+      "output": "{\"verdict\": \"FALSE_POSITIVE\", \"reasoning\": \"DEFAULT_CONFIG_PATH is a compile-time constant \\u2014 no external input and its length is bounded at compile time\"}",
+      "source": "manual",
+      "cwe_id": "CWE-120",
+      "verdict": "FALSE_POSITIVE"
+    },
+    {
+      "instruction": "You are a senior security engineer performing validation review.\n\nCode:\n```\nvoid cleanup(char *ptr) {\n    free(ptr);\n    if (error) {\n        free(ptr);\n    }\n}\n```\n\nFinding to validate:\n{\n  \"category\": \"Double Free\",\n  \"cwe_ids\": [\n    \"CWE-415\"\n  ],\n  \"cwe_id\": \"CWE-415\",\n  \"affected_code\": \"free(ptr) called twice\",\n  \"source\": \"manual\"\n}\n\nDetermine if this finding is:\n- CONFIRMED: genuinely present and exploitable in this specific code\n- FALSE_POSITIVE: pattern matched but not actually exploitable in context\n- NEEDS_CONTEXT: might be vulnerable but requires more context to confirm\n\nRespond with a JSON object:\n{\"verdict\": \"CONFIRMED|FALSE_POSITIVE|NEEDS_CONTEXT\", \"reasoning\": \"one sentence\"}",
+      "output": "{\"verdict\": \"CONFIRMED\", \"reasoning\": \"ptr is freed unconditionally then freed again in the error branch \\u2014 heap corruption on any error condition\"}",
+      "source": "manual",
+      "cwe_id": "CWE-415",
+      "verdict": "CONFIRMED"
+    }
+  ],
+  "validation": [
+    {
+      "instruction": "You are a senior security engineer performing validation review.\n\nCode:\n```\ndef load_data(serialized: bytes, trusted: bool):\n    import pickle\n    if trusted:\n        return pickle.loads(serialized)\n    return None\n```\n\nFinding to validate:\n{\n  \"category\": \"Insecure Deserialization\",\n  \"cwe_ids\": [\n    \"CWE-502\"\n  ],\n  \"cwe_id\": \"CWE-502\",\n  \"affected_code\": \"pickle.loads(serialized)\",\n  \"source\": \"manual\"\n}\n\nDetermine if this finding is:\n- CONFIRMED: genuinely present and exploitable in this specific code\n- FALSE_POSITIVE: pattern matched but not actually exploitable in context\n- NEEDS_CONTEXT: might be vulnerable but requires more context to confirm\n\nRespond with a JSON object:\n{\"verdict\": \"CONFIRMED|FALSE_POSITIVE|NEEDS_CONTEXT\", \"reasoning\": \"one sentence\"}",
+      "output": "{\"verdict\": \"NEEDS_CONTEXT\", \"reasoning\": \"Deserialization guarded by trusted flag \\u2014 depends on whether callers set trusted=True only for genuinely safe sources\"}",
+      "source": "manual",
+      "cwe_id": "CWE-502",
+      "verdict": "NEEDS_CONTEXT"
+    },
+    {
+      "instruction": "You are a senior security engineer performing validation review.\n\nCode:\n```\ndef verify_token(token: str, expected: str) -> bool:\n    import hmac\n    return hmac.compare_digest(token, expected)\n```\n\nFinding to validate:\n{\n  \"category\": \"Improper Authentication\",\n  \"cwe_ids\": [\n    \"CWE-287\"\n  ],\n  \"cwe_id\": \"CWE-287\",\n  \"affected_code\": \"token comparison\",\n  \"source\": \"manual\"\n}\n\nDetermine if this finding is:\n- CONFIRMED: genuinely present and exploitable in this specific code\n- FALSE_POSITIVE: pattern matched but not actually exploitable in context\n- NEEDS_CONTEXT: might be vulnerable but requires more context to confirm\n\nRespond with a JSON object:\n{\"verdict\": \"CONFIRMED|FALSE_POSITIVE|NEEDS_CONTEXT\", \"reasoning\": \"one sentence\"}",
+      "output": "{\"verdict\": \"FALSE_POSITIVE\", \"reasoning\": \"hmac.compare_digest performs constant-time comparison preventing timing attacks \\u2014 this is the correct secure pattern\"}",
+      "source": "manual",
+      "cwe_id": "CWE-287",
+      "verdict": "FALSE_POSITIVE"
+    },
+    {
+      "instruction": "You are a senior security engineer performing validation review.\n\nCode:\n```\nvoid process() {\n    char *data = (char *)malloc(256);\n    strcpy(data, \"sensitive\");\n    free(data);\n    printf(\"Data: %s\\n\", data);\n}\n```\n\nFinding to validate:\n{\n  \"category\": \"Use After Free\",\n  \"cwe_ids\": [\n    \"CWE-416\"\n  ],\n  \"cwe_id\": \"CWE-416\",\n  \"affected_code\": \"printf after free(data)\",\n  \"source\": \"manual\"\n}\n\nDetermine if this finding is:\n- CONFIRMED: genuinely present and exploitable in this specific code\n- FALSE_POSITIVE: pattern matched but not actually exploitable in context\n- NEEDS_CONTEXT: might be vulnerable but requires more context to confirm\n\nRespond with a JSON object:\n{\"verdict\": \"CONFIRMED|FALSE_POSITIVE|NEEDS_CONTEXT\", \"reasoning\": \"one sentence\"}",
+      "output": "{\"verdict\": \"CONFIRMED\", \"reasoning\": \"data is dereferenced after free() with no reassignment \\u2014 classic use-after-free, heap contents unpredictable\"}",
+      "source": "manual",
+      "cwe_id": "CWE-416",
+      "verdict": "CONFIRMED"
+    }
+  ],
+  "test": [
+    {
+      "instruction": "You are a senior security engineer performing validation review.\n\nCode:\n```\nvoid copy_greeting(void) {\n    char buf[64];\n    strcpy(buf, \"Hello, World!\");\n}\n```\n\nFinding to validate:\n{\n  \"category\": \"Buffer Overflow\",\n  \"cwe_ids\": [\n    \"CWE-120\"\n  ],\n  \"cwe_id\": \"CWE-120\",\n  \"affected_code\": \"strcpy(buf, ...)\",\n  \"source\": \"manual\"\n}\n\nDetermine if this finding is:\n- CONFIRMED: genuinely present and exploitable in this specific code\n- FALSE_POSITIVE: pattern matched but not actually exploitable in context\n- NEEDS_CONTEXT: might be vulnerable but requires more context to confirm\n\nRespond with a JSON object:\n{\"verdict\": \"CONFIRMED|FALSE_POSITIVE|NEEDS_CONTEXT\", \"reasoning\": \"one sentence\"}",
+      "output": "{\"verdict\": \"FALSE_POSITIVE\", \"reasoning\": \"Source is a string literal of known fixed length (13 chars) that fits well within the 64-byte buffer \\u2014 no external input involved\"}",
+      "source": "manual",
+      "cwe_id": "CWE-120",
+      "verdict": "FALSE_POSITIVE"
+    },
+    {
+      "instruction": "You are a senior security engineer performing validation review.\n\nCode:\n```\ndef connect_db():\n    password = \"admin123\"\n    api_key = \"sk-abc123secretkey\"\n    conn = db.connect(user=\"admin\", password=password)\n    return conn\n```\n\nFinding to validate:\n{\n  \"category\": \"Hardcoded Credentials\",\n  \"cwe_ids\": [\n    \"CWE-798\"\n  ],\n  \"cwe_id\": \"CWE-798\",\n  \"affected_code\": \"password = \\\"admin123\\\"\",\n  \"source\": \"manual\"\n}\n\nDetermine if this finding is:\n- CONFIRMED: genuinely present and exploitable in this specific code\n- FALSE_POSITIVE: pattern matched but not actually exploitable in context\n- NEEDS_CONTEXT: might be vulnerable but requires more context to confirm\n\nRespond with a JSON object:\n{\"verdict\": \"CONFIRMED|FALSE_POSITIVE|NEEDS_CONTEXT\", \"reasoning\": \"one sentence\"}",
+      "output": "{\"verdict\": \"CONFIRMED\", \"reasoning\": \"Plaintext credentials hardcoded in source \\u2014 exposed in version control and any compiled binary\"}",
+      "source": "manual",
+      "cwe_id": "CWE-798",
+      "verdict": "CONFIRMED"
+    },
+    {
+      "instruction": "You are a senior security engineer performing validation review.\n\nCode:\n```\ndef execute_query(query_str: str):\n    cursor.execute(query_str)\n```\n\nFinding to validate:\n{\n  \"category\": \"SQL Injection\",\n  \"cwe_ids\": [\n    \"CWE-89\"\n  ],\n  \"cwe_id\": \"CWE-89\",\n  \"affected_code\": \"cursor.execute(query_str)\",\n  \"source\": \"manual\"\n}\n\nDetermine if this finding is:\n- CONFIRMED: genuinely present and exploitable in this specific code\n- FALSE_POSITIVE: pattern matched but not actually exploitable in context\n- NEEDS_CONTEXT: might be vulnerable but requires more context to confirm\n\nRespond with a JSON object:\n{\"verdict\": \"CONFIRMED|FALSE_POSITIVE|NEEDS_CONTEXT\", \"reasoning\": \"one sentence\"}",
+      "output": "{\"verdict\": \"NEEDS_CONTEXT\", \"reasoning\": \"Query string passed as parameter \\u2014 cannot confirm SQL injection without examining all call sites that supply query_str\"}",
+      "source": "manual",
+      "cwe_id": "CWE-89",
+      "verdict": "NEEDS_CONTEXT"
+    }
+  ]
+}

@@ -1,0 +1,1466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>NVD RAG — Vulnerability Audit & Project Scanner</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    --bg:          #0b0f17;
+    --panel:       #131a26;
+    --panel2:      #1a2332;
+    --panel3:      #222e42;
+    --border:      #263345;
+    --border-hover:#384860;
+    --text:        #e2e8f0;
+    --text-bright: #ffffff;
+    --muted:       #8a99ad;
+    --accent:      #38bdf8;
+    --accent-glow: rgba(56, 189, 248, 0.15);
+    --critical:    #f87171;
+    --critical-bg: rgba(248, 113, 113, 0.15);
+    --high:        #fb923c;
+    --high-bg:     rgba(251, 146, 60, 0.15);
+    --medium:      #facc15;
+    --medium-bg:   rgba(250, 204, 21, 0.15);
+    --low:         #4ade80;
+    --low-bg:      rgba(74, 222, 128, 0.15);
+    --clean:       #34d399;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    min-height: 100vh;
+    padding-bottom: 80px;
+  }
+  header {
+    background: linear-gradient(180deg, #161e2e 0%, var(--bg) 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 28px 36px 20px;
+  }
+  .header-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .logo-title {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .shield-icon {
+    width: 34px;
+    height: 34px;
+    color: var(--accent);
+    filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.5));
+    flex: none;
+  }
+  h1 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-bright);
+    letter-spacing: -0.02em;
+  }
+  .subtitle {
+    margin: 4px 0 0;
+    color: var(--muted);
+    font-size: 13px;
+  }
+  .pipeline-badge {
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    color: var(--accent);
+    font-family: var(--mono);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .pipeline-badge .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+  }
+
+  main {
+    max-width: 1200px;
+    margin: 28px auto 0;
+    padding: 0 24px;
+  }
+
+  /* ── Tabs & Scanner Box ── */
+  .scanner-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  }
+  .tabs {
+    display: flex;
+    background: var(--panel2);
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+  }
+  .tab-btn {
+    background: transparent;
+    border: none;
+    outline: none;
+    padding: 14px 22px;
+    color: var(--muted);
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+  .tab-btn:hover {
+    color: var(--text-bright);
+    background: rgba(255,255,255,0.02);
+  }
+  .tab-btn.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+    background: var(--panel);
+  }
+  .tab-content {
+    padding: 28px;
+    display: none;
+  }
+  .tab-content.active {
+    display: block;
+  }
+
+  /* ── Dropzone ── */
+  .dropzone {
+    border: 2px dashed var(--border);
+    border-radius: 12px;
+    padding: 44px 24px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: rgba(19, 26, 38, 0.6);
+  }
+  .dropzone:hover, .dropzone.drag {
+    border-color: var(--accent);
+    background: var(--accent-glow);
+  }
+  .dropzone-icon {
+    width: 42px;
+    height: 42px;
+    margin: 0 auto 10px;
+    color: var(--accent);
+  }
+  .dropzone .big {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-bright);
+    margin-bottom: 6px;
+  }
+  .dropzone .small {
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .file-input { display: none; }
+
+  /* ── Input Forms ── */
+  .form-group {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .text-input {
+    flex: 1;
+    min-width: 280px;
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    color: var(--text-bright);
+    font-family: var(--mono);
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .text-input:focus {
+    border-color: var(--accent);
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: filter 0.2s, transform 0.1s;
+  }
+  .btn-primary:hover {
+    filter: brightness(1.15);
+  }
+  .btn-primary:active {
+    transform: scale(0.98);
+  }
+  .btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* ── Example Cards Grid ── */
+  .examples-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 14px;
+  }
+  .example-card {
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .example-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    background: var(--panel3);
+  }
+  .example-title {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text-bright);
+    margin-bottom: 6px;
+  }
+  .example-desc {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* ── Scan Progress Panel ── */
+  #progressPanel {
+    display: none;
+    margin-top: 24px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px 26px 18px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  }
+  .prog-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .prog-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-bright);
+  }
+  .prog-sub {
+    margin-top: 4px;
+    font-size: 12.5px;
+    color: var(--muted);
+    font-family: var(--mono);
+    word-break: break-all;
+  }
+  .prog-pct {
+    font-size: 30px;
+    font-weight: 800;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+  .prog-pct small {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    margin-left: 4px;
+  }
+  .prog-bar {
+    position: relative;
+    height: 10px;
+    margin: 16px 0 6px;
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .prog-fill {
+    height: 100%;
+    width: 0%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #0369a1, var(--accent), #7dd3fc);
+    background-size: 200% 100%;
+    animation: barflow 2.4s linear infinite;
+    transition: width 0.6s ease;
+  }
+  .prog-panel-failed .prog-fill { background: var(--critical); animation: none; }
+  .prog-panel-done .prog-fill   { background: var(--clean);    animation: none; }
+  @keyframes barflow { from { background-position: 200% 0; } to { background-position: 0 0; } }
+  .prog-meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+  .prog-meta strong { color: var(--text-bright); font-weight: 600; }
+
+  .pipeline-wrap {
+    margin-top: 18px;
+    overflow-x: auto;
+    border-top: 1px solid var(--border);
+    padding-top: 6px;
+  }
+  .pipeline-svg { display: block; width: 100%; min-width: 860px; height: auto; }
+  .pipeline-svg text { font-family: var(--sans); }
+  .pl-track      { stroke: var(--border); stroke-width: 3; fill: none; }
+  .pl-track-done { stroke: var(--accent); stroke-width: 3; fill: none; }
+  .pl-track-live { stroke: var(--accent); stroke-width: 3; fill: none; stroke-dasharray: 6 8;
+                   animation: dashflow 0.9s linear infinite; }
+  @keyframes dashflow { to { stroke-dashoffset: -14; } }
+  .pl-node        { fill: var(--panel2); stroke: var(--border); stroke-width: 2; }
+  .pl-node.done   { fill: rgba(56, 189, 248, 0.18); stroke: var(--accent); }
+  .pl-node.running{ fill: var(--panel3); stroke: var(--accent); }
+  .pl-node.failed { fill: var(--critical-bg); stroke: var(--critical); }
+  .pl-node.skipped{ fill: var(--bg); stroke: var(--border); stroke-dasharray: 3 3; }
+  .pl-ring        { fill: none; stroke: var(--accent); stroke-width: 3.5; stroke-linecap: round;
+                    transition: stroke-dashoffset 0.6s ease; }
+  .pl-pulse       { fill: none; stroke: var(--accent); stroke-width: 2; opacity: 0;
+                    transform-box: fill-box; transform-origin: center; animation: pulse 1.6s ease-out infinite; }
+  @keyframes pulse { 0% { opacity: 0.7; transform: scale(1); } 100% { opacity: 0; transform: scale(1.7); } }
+  .pl-num   { fill: var(--muted); font-size: 12px; font-weight: 700; }
+  .pl-num.on{ fill: var(--text-bright); }
+  .pl-check { fill: none; stroke: var(--accent); stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+  .pl-label { fill: var(--text); font-size: 11.5px; font-weight: 600; }
+  .pl-label.muted { fill: var(--muted); font-weight: 500; }
+  .pl-count { fill: var(--muted); font-size: 10.5px; font-family: var(--mono); }
+  .pl-phase { fill: var(--muted); font-size: 10px; font-weight: 700; letter-spacing: 0.12em; }
+  .pl-phase-line { stroke: var(--border); stroke-width: 1; }
+  .pl-loop  { fill: none; stroke: var(--medium); stroke-width: 1.6; stroke-dasharray: 4 4; opacity: 0.75; }
+  .pl-loop-label { fill: var(--medium); font-size: 10.5px; font-style: italic; opacity: 0.85; }
+
+  .prog-steps {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 10px;
+    font-size: 13px;
+  }
+  .prog-steps h4 {
+    margin: 0 0 6px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+  .prog-steps ul { margin: 0; padding-left: 18px; color: var(--text); }
+  .prog-steps li { margin: 2px 0; }
+  .prog-steps li.now { color: var(--accent); font-weight: 600; }
+  .prog-error {
+    margin-top: 12px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    background: var(--critical-bg);
+    color: var(--critical);
+    font-size: 13px;
+    display: none;
+  }
+  @media (max-width: 720px) {
+    .prog-steps { grid-template-columns: 1fr; }
+    #progressPanel { padding: 18px 16px 14px; }
+  }
+
+  /* ── Dashboard & Results ── */
+  #dashboard {
+    display: none;
+    margin-top: 32px;
+  }
+
+  .audit-summary-box {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px 28px;
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  .audit-meta h2 {
+    margin: 0 0 6px;
+    font-size: 20px;
+    color: var(--text-bright);
+  }
+  .audit-meta p {
+    margin: 0;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .score-badge-box {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 20px;
+  }
+  .score-circle {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: 800;
+    color: #fff;
+    background: #0284c7;
+  }
+  .score-circle.grade-A { background: #16a34a; box-shadow: 0 0 12px rgba(22,163,74,0.4); }
+  .score-circle.grade-B { background: #0284c7; box-shadow: 0 0 12px rgba(2,132,199,0.4); }
+  .score-circle.grade-C { background: #ca8a04; box-shadow: 0 0 12px rgba(202,138,4,0.4); }
+  .score-circle.grade-D { background: #ea580c; box-shadow: 0 0 12px rgba(234,88,12,0.4); }
+  .score-circle.grade-F { background: #dc2626; box-shadow: 0 0 12px rgba(220,38,38,0.4); }
+
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .kpi-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+  .kpi-val {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-bright);
+    margin-bottom: 2px;
+  }
+  .kpi-label {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── Filter & Search Toolbar ── */
+  .toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+  .filter-group {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .filter-btn {
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .filter-btn:hover {
+    color: var(--text-bright);
+    border-color: var(--border-hover);
+  }
+  .filter-btn.active {
+    background: var(--panel3);
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+  .search-input {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 7px 14px;
+    color: var(--text);
+    font-size: 13px;
+    outline: none;
+    min-width: 220px;
+  }
+  .search-input:focus { border-color: var(--accent); }
+
+  .export-btns {
+    display: flex;
+    gap: 8px;
+  }
+  .btn-export {
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--text-bright);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.2s;
+  }
+  .btn-export:hover { background: var(--panel3); }
+
+  /* ── File Cards & Findings ── */
+  .files-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .file-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .file-card:hover { border-color: var(--border-hover); }
+  .file-header {
+    background: var(--panel2);
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+  }
+  .file-path {
+    font-family: var(--mono);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-bright);
+  }
+  .file-meta-badges {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .lang-tag {
+    font-size: 11px;
+    text-transform: uppercase;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    padding: 2px 8px;
+    border-radius: 4px;
+    color: var(--muted);
+  }
+  .file-body {
+    padding: 20px;
+  }
+
+  /* ── Badges ── */
+  .badge {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 3px 9px;
+    border-radius: 5px;
+    text-transform: uppercase;
+  }
+  .badge.CRITICAL { background: var(--critical-bg); color: var(--critical); border: 1px solid var(--critical); }
+  .badge.HIGH     { background: var(--high-bg); color: var(--high); border: 1px solid var(--high); }
+  .badge.MEDIUM   { background: var(--medium-bg); color: var(--medium); border: 1px solid var(--medium); }
+  .badge.LOW      { background: var(--low-bg); color: var(--low); border: 1px solid var(--low); }
+  .badge.CLEAN    { background: var(--low-bg); color: var(--clean); border: 1px solid var(--clean); }
+
+  .finding-box {
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 14px;
+  }
+  .finding-box:last-child { margin-bottom: 0; }
+  .finding-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+  }
+  .finding-title {
+    font-size: 14.5px;
+    font-weight: 600;
+    color: var(--text-bright);
+  }
+  .finding-cwe {
+    font-size: 12px;
+    color: var(--accent);
+    font-family: var(--mono);
+  }
+  .finding-dl {
+    margin: 8px 0 0;
+    font-size: 13px;
+    line-height: 1.55;
+  }
+  .finding-dt {
+    color: var(--muted);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-top: 10px;
+    font-weight: 600;
+  }
+  .finding-dt:first-child { margin-top: 0; }
+  .finding-dd {
+    margin: 3px 0 0;
+    color: var(--text);
+  }
+
+  pre.code {
+    background: #090d14;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px 14px;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+    margin: 6px 0 0;
+    color: #93c5fd;
+  }
+
+  .deps-title { margin: 32px 0 6px; font-size: 16px; color: var(--text-bright); }
+  .deps-note  { margin: 0 0 14px; font-size: 12.5px; color: var(--muted); }
+  .adv-list   { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; font-size: 13px; }
+  .adv-list a { color: #93c5fd; font-family: var(--mono); }
+
+  .clean-state {
+    color: var(--clean);
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo-title">
+      <svg class="shield-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5 4 5.5v6c0 5 3.4 8.6 8 10 4.6-1.4 8-5 8-10v-6l-8-3Z"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg>
+      <div>
+        <h1>NVD RAG Vulnerability Audit & Project Scanner</h1>
+        <div class="subtitle">AI-powered deep vulnerability analysis, RAG threat intelligence & code fix recommendations</div>
+      </div>
+    </div>
+    <div class="pipeline-badge">
+      <span class="dot"></span>
+      AST &bull; RAG/CVE &bull; Fine-Tuned Agent &bull; Advisory
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="scanner-card">
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('repoTab')">Git Repository URL</button>
+      <button class="tab-btn" onclick="switchTab('folderTab')">Folder / Files Upload</button>
+      <button class="tab-btn" onclick="switchTab('demosTab')">Built-in Demos</button>
+    </div>
+
+    <!-- 1. Folder / File Dropzone -->
+    <div id="folderTab" class="tab-content">
+      <div id="dropzone" class="dropzone">
+        <svg class="dropzone-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7.5A1.5 1.5 0 0 1 4.5 6h4.2l2 2h8.8A1.5 1.5 0 0 1 21 9.5v8a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 17.5v-10Z"/><path d="M12 16v-5m0 0-2.2 2.2M12 11l2.2 2.2"/></svg>
+        <div class="big">Drag &amp; drop whole project folders or source files here</div>
+        <div class="small">Or click below to browse files or an entire folder (.c, .py, .js, .ts, .java, .go, .rs, etc.)</div>
+        <div style="margin-top:16px; display:flex; justify-content:center; gap:12px;">
+          <button class="btn-primary" onclick="event.stopPropagation(); document.getElementById('folderInput').click()">Browse Folder</button>
+          <button class="btn-primary" style="background:var(--panel2); border:1px solid var(--border);" onclick="event.stopPropagation(); document.getElementById('filesInput').click()">Browse Files</button>
+        </div>
+        <input type="file" id="folderInput" class="file-input" webkitdirectory directory multiple>
+        <input type="file" id="filesInput" class="file-input" multiple>
+      </div>
+    </div>
+
+    <!-- 2. Git Repository URL -->
+    <div id="repoTab" class="tab-content active">
+      <p style="margin-top:0; font-size:13.5px; color:var(--muted);">Clone and scan a public Git repository:</p>
+      <div class="form-group">
+        <input type="text" id="gitRepoInput" class="text-input" placeholder="e.g. https://github.com/storytold/artcraft">
+        <button id="btnScanRepo" class="btn-primary" onclick="scanGitRepository()">Clone &amp; Scan Repo</button>
+      </div>
+    </div>
+
+    <!-- 3. Built-in Demos -->
+    <div id="demosTab" class="tab-content">
+      <p style="margin-top:0; font-size:13.5px; color:var(--muted); margin-bottom:16px;">Select a pre-configured vulnerability scenario to evaluate the pipeline:</p>
+      <div id="examplesList" class="examples-grid"></div>
+    </div>
+  </div>
+
+  <!-- Scan Progress -->
+  <div id="progressPanel" aria-live="polite">
+    <div class="prog-head">
+      <div>
+        <div id="progTitle" class="prog-title">Scanning</div>
+        <div id="progSource" class="prog-sub"></div>
+      </div>
+      <div id="progPct" class="prog-pct">0<small>%</small></div>
+    </div>
+    <div class="prog-bar"><div id="progFill" class="prog-fill"></div></div>
+    <div class="prog-meta">
+      <span id="progStep">Queued</span>
+      <span id="progTime"></span>
+    </div>
+    <div class="pipeline-wrap"><svg id="pipelineSvg" class="pipeline-svg" role="img" aria-label="Pipeline progress"></svg></div>
+    <div class="prog-steps">
+      <div><h4>Completed</h4><ul id="progDoneList"></ul></div>
+      <div><h4>Remaining</h4><ul id="progTodoList"></ul></div>
+    </div>
+    <div id="progError" class="prog-error"></div>
+  </div>
+
+  <!-- Project Audit Dashboard -->
+  <div id="dashboard">
+    <div class="audit-summary-box">
+      <div class="audit-meta">
+        <h2 id="projTitle">Project Vulnerability Audit</h2>
+        <p id="projDetails">Source: Local Directory &bull; Scanned in 1.2s</p>
+      </div>
+      <div class="score-badge-box">
+        <div id="scoreCircle" class="score-circle grade-A">95</div>
+        <div>
+          <div style="font-size:11px; color:var(--muted); text-transform:uppercase; font-weight:600;">Security Score</div>
+          <div id="scoreGradeText" style="font-size:14px; font-weight:700; color:var(--text-bright);">GRADE: A</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KPI Metric Cards -->
+    <div class="kpi-grid">
+      <div class="kpi-card"><div class="kpi-val" id="kpiFiles">0</div><div class="kpi-label">Files Scanned</div></div>
+      <div class="kpi-card"><div class="kpi-val" id="kpiLoc">0</div><div class="kpi-label">Lines of Code</div></div>
+      <div class="kpi-card"><div class="kpi-val" id="kpiCritical" style="color:var(--critical);">0</div><div class="kpi-label">Critical</div></div>
+      <div class="kpi-card"><div class="kpi-val" id="kpiHigh" style="color:var(--high);">0</div><div class="kpi-label">High</div></div>
+      <div class="kpi-card"><div class="kpi-val" id="kpiMedium" style="color:var(--medium);">0</div><div class="kpi-label">Medium</div></div>
+      <div class="kpi-card"><div class="kpi-val" id="kpiClean" style="color:var(--clean);">0</div><div class="kpi-label">Clean Files</div></div>
+      <div class="kpi-card"><div class="kpi-val" id="kpiDeps" style="color:var(--high);">0</div><div class="kpi-label">Vulnerable Deps</div></div>
+    </div>
+
+    <!-- Toolbar: Filters & Export -->
+    <div class="toolbar">
+      <div class="filter-group">
+        <button class="filter-btn active" onclick="setFilter('ALL', this)">All Files (<span id="cntAll">0</span>)</button>
+        <button class="filter-btn" onclick="setFilter('VULN', this)">Vulnerable (<span id="cntVuln">0</span>)</button>
+        <button class="filter-btn" onclick="setFilter('REVIEW', this)">Needs Review (<span id="cntReview">0</span>)</button>
+        <button class="filter-btn" onclick="setFilter('CLEAN', this)">Clean (<span id="cntClean">0</span>)</button>
+        <button class="filter-btn" onclick="setFilter('CRITICAL', this)">Critical</button>
+      </div>
+
+      <div style="display:flex; gap:10px; align-items:center;">
+        <input type="text" id="fileSearch" class="search-input" placeholder="Search files or CVE..." oninput="renderFilteredFiles()">
+        <div class="export-btns">
+          <button class="btn-export" onclick="exportReport('json')">Export JSON</button>
+          <button class="btn-export" onclick="exportReport('md')">Export Markdown</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Files Container -->
+    <div id="filesContainer" class="files-container"></div>
+
+    <!-- Dependencies (OSV.dev) -->
+    <h3 id="depsTitle" class="deps-title" style="display:none;"></h3>
+    <p id="depsNote" class="deps-note" style="display:none;"></p>
+    <div id="depsContainer" class="files-container"></div>
+  </div>
+</main>
+
+<script>
+let currentScanData = null;
+let currentFilter = 'ALL';
+
+function switchTab(tabId) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  document.getElementById(tabId).classList.add('active');
+}
+
+// ── Dropzone & Upload Event Handlers ──
+const dropzone = document.getElementById('dropzone');
+const folderInput = document.getElementById('folderInput');
+const filesInput = document.getElementById('filesInput');
+
+['dragenter', 'dragover'].forEach(e => {
+  dropzone.addEventListener(e, evt => { evt.preventDefault(); dropzone.classList.add('drag'); });
+});
+['dragleave', 'drop'].forEach(e => {
+  dropzone.addEventListener(e, evt => { evt.preventDefault(); dropzone.classList.remove('drag'); });
+});
+
+// Dropped folders arrive as directory entries; walk them to get every file
+// with its path relative to the dropped folder.
+function readEntry(entry, prefix = '') {
+  return new Promise(resolve => {
+    if (entry.isFile) {
+      entry.file(f => resolve([{ file: f, path: prefix + f.name }]), () => resolve([]));
+    } else if (entry.isDirectory) {
+      const reader = entry.createReader();
+      const all = [];
+      const readBatch = () => reader.readEntries(async batch => {
+        if (!batch.length) {
+          const nested = await Promise.all(all.map(e => readEntry(e, prefix + entry.name + '/')));
+          resolve(nested.flat());
+        } else { all.push(...batch); readBatch(); }
+      }, () => resolve([]));
+      readBatch();
+    } else resolve([]);
+  });
+}
+
+dropzone.addEventListener('drop', async e => {
+  e.preventDefault();
+  const items = Array.from(e.dataTransfer.items || []);
+  const entries = items.map(i => i.webkitGetAsEntry && i.webkitGetAsEntry()).filter(Boolean);
+  if (entries.length) {
+    const files = (await Promise.all(entries.map(en => readEntry(en)))).flat();
+    uploadFiles(files);
+  } else if (e.dataTransfer.files.length) {
+    uploadFiles(Array.from(e.dataTransfer.files).map(f => ({ file: f, path: f.name })));
+  }
+});
+const pickFiles = list => Array.from(list).map(f => ({ file: f, path: f.webkitRelativePath || f.name }));
+folderInput.addEventListener('change', e => { if (e.target.files.length) uploadFiles(pickFiles(e.target.files)); });
+filesInput.addEventListener('change', e => { if (e.target.files.length) uploadFiles(pickFiles(e.target.files)); });
+
+// ── Scan jobs ──
+let activePoll = null;
+
+function setBusy(busy) {
+  document.querySelectorAll('.btn-primary').forEach(b => { b.disabled = busy; });
+  document.querySelectorAll('.example-card').forEach(c => { c.style.pointerEvents = busy ? 'none' : ''; c.style.opacity = busy ? '0.5' : ''; });
+}
+
+async function startJob(url, options, title, source) {
+  if (activePoll) return alert('A scan is already running.');
+  setBusy(true);
+  try {
+    const res = await fetch(url, options);
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.detail || `Server error: ${res.status}`);
+    trackJob(data.job_id, title, source);
+  } catch (err) {
+    setBusy(false);
+    showProgressError(title, source, err.message);
+  }
+}
+
+async function uploadFiles(items) {
+  if (!items.length) return;
+  const form = new FormData();
+  items.forEach(({ file, path }) => form.append('files', file, path));
+  const top = items[0].path.includes('/') ? items[0].path.split('/')[0] : null;
+  await startJob('/api/scan/upload', { method: 'POST', body: form },
+                 'Scanning uploaded project', top ? `${top}/ (${items.length} files)` : `${items.length} file(s)`);
+}
+
+async function scanGitRepository() {
+  const repo = document.getElementById('gitRepoInput').value.trim();
+  if (!repo) return alert('Please enter a Git repository URL');
+  await startJob('/api/scan/repo', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ repo_url: repo })
+  }, 'Scanning repository', repo);
+}
+
+function trackJob(jobId, title, source) {
+  const panel = document.getElementById('progressPanel');
+  panel.className = '';
+  panel.style.display = 'block';
+  document.getElementById('progTitle').innerText = title;
+  document.getElementById('progSource').innerText = source;
+  document.getElementById('progError').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'none';
+  panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  const poll = async () => {
+    try {
+      const res = await fetch(`/api/jobs/${jobId}`);
+      if (!res.ok) throw new Error(`Server error: ${res.status}`);
+      const job = await res.json();
+      renderProgress(job);
+      if (job.status === 'done' || job.status === 'failed') {
+        clearInterval(activePoll); activePoll = null; setBusy(false);
+        if (job.status === 'done') displayProjectScanResult(job.result);
+      }
+    } catch (err) {
+      clearInterval(activePoll); activePoll = null; setBusy(false);
+      showProgressError(title, source, 'Lost contact with the server: ' + err.message);
+    }
+  };
+  activePoll = setInterval(poll, 1000);
+  poll();
+}
+
+function showProgressError(title, source, message) {
+  const panel = document.getElementById('progressPanel');
+  panel.style.display = 'block';
+  panel.className = 'prog-panel-failed';
+  document.getElementById('progTitle').innerText = title;
+  document.getElementById('progSource').innerText = source;
+  const el = document.getElementById('progError');
+  el.innerText = message;
+  el.style.display = 'block';
+}
+
+// ── Progress model ──
+// Share of the overall percentage per stage; the LLM-heavy agents get the most.
+const STAGE_WEIGHT = {
+  clone: 5, discover: 2, cpg: 13,
+  CPGAgent: 6, ForensicsAgent: 18, RAGQueryAgent: 12, CategorizationAgent: 14,
+  ValidationAgent: 12, ExplainableAIAgent: 8, AdvisoryAgent: 7, report: 3,
+};
+const PHASES = [
+  { name: 'INGEST',  keys: ['clone', 'discover', 'cpg'] },
+  { name: 'ANALYSE', keys: ['CPGAgent', 'ForensicsAgent', 'RAGQueryAgent', 'CategorizationAgent', 'ValidationAgent'] },
+  { name: 'REPORT',  keys: ['ExplainableAIAgent', 'AdvisoryAgent', 'report'] },
+];
+
+function stageFraction(st, jobDone) {
+  if (jobDone || st.status === 'done') return 1;
+  if (st.total) return Math.min(1, st.done / st.total);
+  return st.status === 'running' ? 0.4 : 0;
+}
+
+function fmtDuration(sec) {
+  sec = Math.max(0, Math.round(sec));
+  const m = Math.floor(sec / 60), s = sec % 60;
+  return m ? `${m}m ${String(s).padStart(2, '0')}s` : `${s}s`;
+}
+
+function renderProgress(job) {
+  const done = job.status === 'done';
+  const stages = job.stages.filter(s => s.status !== 'skipped');
+  let total = 0, got = 0;
+  stages.forEach(st => {
+    const w = STAGE_WEIGHT[st.key] || 5;
+    total += w; got += w * stageFraction(st, done);
+  });
+  const pct = done ? 100 : Math.min(99, Math.floor(100 * got / total));
+
+  const isFinished = s => done || s.status === 'done';
+  const current = stages.find(s => !isFinished(s));
+  const idx = current ? stages.indexOf(current) + 1 : stages.length;
+
+  document.getElementById('progPct').innerHTML = `${pct}<small>%</small>`;
+  document.getElementById('progFill').style.width = pct + '%';
+  document.getElementById('progressPanel').className =
+    job.status === 'failed' ? 'prog-panel-failed' : (done ? 'prog-panel-done' : '');
+
+  let stepText;
+  if (job.status === 'queued') stepText = 'Queued: waiting for the previous scan to finish';
+  else if (job.status === 'failed') stepText = `Failed at step ${idx} of ${stages.length}: ${current ? current.label : ''}`;
+  else if (done) stepText = `All ${stages.length} steps complete`;
+  else {
+    const cnt = current.total ? ` (${current.done}/${current.total} files)` : '';
+    stepText = `Step ${idx} of ${stages.length}: ${current.label}${cnt}`;
+  }
+  document.getElementById('progStep').innerHTML = `<strong>${escapeHtml(stepText)}</strong>`;
+
+  let timeText = `Elapsed ${fmtDuration(job.elapsed_sec)}`;
+  if (job.status === 'running' && pct >= 8) {
+    timeText += ` · about ${fmtDuration(job.elapsed_sec * (100 - pct) / pct)} left`;
+  }
+  if (job.files_total) timeText += ` · ${job.files_done}/${job.files_total} files analysed`;
+  document.getElementById('progTime').innerText = timeText;
+
+  document.getElementById('progDoneList').innerHTML =
+    stages.filter(isFinished).map(s => `<li>${escapeHtml(s.label)}</li>`).join('') || '<li>None yet</li>';
+  const todo = stages.filter(s => !isFinished(s));
+  const live = job.status === 'running';
+  document.getElementById('progTodoList').innerHTML = todo.length
+    ? todo.map((s, i) => `<li class="${i === 0 && live ? 'now' : ''}">${escapeHtml(s.label)}${i === 0 && live ? ' (in progress)' : ''}</li>`).join('')
+    : '<li>Nothing left</li>';
+
+  if (job.status === 'failed') {
+    const el = document.getElementById('progError');
+    el.innerText = job.error || 'Scan failed';
+    el.style.display = 'block';
+  }
+  renderPipeline(job, done);
+}
+
+// ── Pipeline diagram (SVG) ──
+function wrapLabel(label) {
+  const words = label.split(' ');
+  if (label.length <= 13 || words.length === 1) return [label];
+  let best = 1, bestDiff = Infinity;
+  for (let i = 1; i < words.length; i++) {
+    const d = Math.abs(words.slice(0, i).join(' ').length - words.slice(i).join(' ').length);
+    if (d < bestDiff) { bestDiff = d; best = i; }
+  }
+  return [words.slice(0, best).join(' '), words.slice(best).join(' ')];
+}
+
+function renderPipeline(job, jobDone) {
+  const svg = document.getElementById('pipelineSvg');
+  const stages = job.stages;
+  const W = 1100, NY = 92, R = 17, gap = W / stages.length;
+  const x = i => gap / 2 + i * gap;
+  const state = st => (jobDone && st.status !== 'skipped') ? 'done' : st.status;
+  let out = '';
+
+  // Phase headers
+  PHASES.forEach(ph => {
+    const ids = ph.keys.map(k => stages.findIndex(s => s.key === k));
+    const x0 = x(Math.min(...ids)) - gap / 2 + 10, x1 = x(Math.max(...ids)) + gap / 2 - 10;
+    out += `<text class="pl-phase" x="${x0}" y="16">${ph.name}</text>`;
+    out += `<line class="pl-phase-line" x1="${x0}" y1="23" x2="${x1}" y2="23"/>`;
+  });
+
+  // NEEDS_CONTEXT loop: undecided findings go back to code forensics with wider CPG context
+  const iv = stages.findIndex(s => s.key === 'ValidationAgent');
+  const ic = stages.findIndex(s => s.key === 'ForensicsAgent');
+  if (iv > 0 && ic >= 0) {
+    const xv = x(iv), xc = x(ic), top = 34;
+    out += `<path class="pl-loop" d="M ${xv} ${NY - R - 4} C ${xv} ${top}, ${xc} ${top}, ${xc} ${NY - R - 6}"/>`;
+    out += `<path d="M ${xc - 4.5} ${NY - R - 13} L ${xc} ${NY - R - 5} L ${xc + 4.5} ${NY - R - 13}" fill="none" stroke="var(--medium)" stroke-width="1.6" opacity="0.75"/>`;
+    out += `<text class="pl-loop-label" x="${(xv + xc) / 2}" y="${top + 14}" text-anchor="middle">needs context: back to forensics</text>`;
+  }
+
+  // Track segments
+  const passed = s => s === 'done' || s === 'skipped';
+  for (let i = 0; i < stages.length - 1; i++) {
+    const a = state(stages[i]), b = state(stages[i + 1]);
+    const cls = passed(a) && passed(b) ? 'pl-track-done' : (passed(a) && b === 'running' ? 'pl-track-live' : 'pl-track');
+    out += `<line class="${cls}" x1="${x(i) + R + 3}" y1="${NY}" x2="${x(i + 1) - R - 3}" y2="${NY}"/>`;
+  }
+
+  // Nodes
+  let n = 0;
+  stages.forEach((st, i) => {
+    const s = state(st), cx = x(i);
+    if (s !== 'skipped') n++;
+    if (s === 'running') {
+      const frac = st.total ? st.done / st.total : 0.25;
+      const C = 2 * Math.PI * (R + 6);
+      out += `<circle class="pl-pulse" cx="${cx}" cy="${NY}" r="${R}"/>`;
+      out += `<circle cx="${cx}" cy="${NY}" r="${R + 6}" fill="none" stroke="var(--border)" stroke-width="3.5"/>`;
+      out += `<circle class="pl-ring" cx="${cx}" cy="${NY}" r="${R + 6}" stroke-dasharray="${C}" stroke-dashoffset="${C * (1 - frac)}" transform="rotate(-90 ${cx} ${NY})"/>`;
+    }
+    out += `<circle class="pl-node ${s}" cx="${cx}" cy="${NY}" r="${R}"/>`;
+    if (s === 'done') {
+      out += `<path class="pl-check" d="M ${cx - 6} ${NY} l 4 4 l 8 -8.5"/>`;
+    } else if (s === 'failed') {
+      out += `<path d="M ${cx - 5} ${NY - 5} l 10 10 M ${cx + 5} ${NY - 5} l -10 10" stroke="var(--critical)" stroke-width="2.4" stroke-linecap="round"/>`;
+    } else if (s !== 'skipped') {
+      out += `<text class="pl-num ${s === 'running' ? 'on' : ''}" x="${cx}" y="${NY + 4}" text-anchor="middle">${n}</text>`;
+    }
+    const lines = wrapLabel(st.label);
+    lines.forEach((ln, k) => {
+      out += `<text class="pl-label ${s === 'pending' || s === 'skipped' ? 'muted' : ''}" x="${cx}" y="${NY + R + 22 + k * 14}" text-anchor="middle">${escapeHtml(ln)}</text>`;
+    });
+    let sub = '';
+    if (s === 'skipped') sub = 'skipped';
+    else if (st.total) sub = `${jobDone ? st.total : st.done}/${st.total} ${st.key === 'cpg' ? 'lang' : 'files'}`;
+    if (sub) out += `<text class="pl-count" x="${cx}" y="${NY + R + 24 + lines.length * 14}" text-anchor="middle">${sub}</text>`;
+  });
+
+  svg.setAttribute('viewBox', `0 0 ${W} 180`);
+  svg.innerHTML = out;
+}
+
+// ── Render Dashboard ──
+function displayProjectScanResult(result) {
+  currentScanData = result;
+  document.getElementById('dashboard').style.display = 'block';
+
+  document.getElementById('projTitle').innerText = result.project_name;
+  const skipped = Object.entries(result.skipped_unsupported || {});
+  document.getElementById('projDetails').innerText =
+    `Source: [${result.source_type.toUpperCase()}] ${result.source_path} • Scanned: ${result.scan_start_time} (${result.scan_duration_sec}s)` +
+    (skipped.length ? `\nNot analysed (unsupported language): ${skipped.map(([lang, n]) => `${n} ${lang}`).join(', ')}` : '') +
+    (result.unresolved_count ? `\nUnresolved findings needing manual review: ${result.unresolved_count}` : '');
+
+  // Score
+  const scoreElem = document.getElementById('scoreCircle');
+  scoreElem.innerText = result.security_score;
+  scoreElem.className = `score-circle grade-${result.security_grade}`;
+  document.getElementById('scoreGradeText').innerText = `GRADE: ${result.security_grade}`;
+
+  // KPIs
+  document.getElementById('kpiFiles').innerText = result.total_files_scanned;
+  document.getElementById('kpiLoc').innerText = (result.total_lines_of_code || 0).toLocaleString();
+  document.getElementById('kpiCritical').innerText = result.severity_counts.CRITICAL || 0;
+  document.getElementById('kpiHigh').innerText = result.severity_counts.HIGH || 0;
+  document.getElementById('kpiMedium').innerText = result.severity_counts.MEDIUM || 0;
+  document.getElementById('kpiClean').innerText = result.clean_files_count;
+  const runtimeDeps = ((result.dependencies || {}).vulnerable || []).filter(p => !p.dev);
+  document.getElementById('kpiDeps').innerText = runtimeDeps.length;
+
+  // Counts in filter buttons
+  const statuses = result.files.map(fileStatus);
+  document.getElementById('cntAll').innerText = result.files.length;
+  document.getElementById('cntVuln').innerText = statuses.filter(s => s === 'vulnerable').length;
+  document.getElementById('cntReview').innerText = statuses.filter(s => s === 'unresolved' || s === 'incomplete').length;
+  document.getElementById('cntClean').innerText = statuses.filter(s => s === 'clean').length;
+
+  renderFilteredFiles();
+  renderDependencies(result.dependencies);
+  document.getElementById('dashboard').scrollIntoView({ behavior: 'smooth' });
+}
+
+function setFilter(filter, btn) {
+  currentFilter = filter;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderFilteredFiles();
+}
+
+function escapeHtml(s) {
+  return String(s ?? '').replace(/[&<>"']/g, c => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[c]));
+}
+
+// Same buckets as project_scanner.file_status (computed here too for older exports).
+function fileStatus(f) {
+  if (f.status) return f.status;
+  if (f.findings_count > 0) return 'vulnerable';
+  if ((f.needs_context || []).length) return 'unresolved';
+  return f.is_clean ? 'clean' : 'incomplete';
+}
+
+function renderDependencies(deps) {
+  const title = document.getElementById('depsTitle');
+  const note = document.getElementById('depsNote');
+  const container = document.getElementById('depsContainer');
+  container.innerHTML = '';
+  if (!deps || !deps.source) {
+    title.style.display = note.style.display = 'none';
+    return;
+  }
+  const vuln = deps.vulnerable || [];
+  title.style.display = note.style.display = 'block';
+  title.innerText = `Dependencies: ${vuln.filter(p => !p.dev).length} vulnerable runtime, ${vuln.filter(p => p.dev).length} dev-only`;
+  note.innerText = `${deps.packages_checked} pinned package(s) in ${deps.manifests.length} manifest(s) checked against ${deps.source}. ` +
+    'Known-vulnerable versions; reachability from the code is not analysed. Dev-only packages are not scored.' +
+    ((deps.unpinned || []).length ? ` Unpinned (not checked): ${deps.unpinned.map(u => u.name).join(', ')}.` : '') +
+    ((deps.errors || []).length ? ` Warnings: ${deps.errors.slice(0, 3).join('; ')}` : '');
+
+  container.innerHTML = vuln.map(p => `
+    <div class="file-card">
+      <div class="file-header" onclick="toggleCard(this)">
+        <div class="file-path">${escapeHtml(p.name)} ${escapeHtml(p.version)}</div>
+        <div class="file-meta-badges">
+          <span class="lang-tag">${escapeHtml(p.ecosystem)}</span>
+          ${p.dev ? '<span class="lang-tag">dev</span>' : ''}
+          <span class="lang-tag">${p.advisories.length} advisor${p.advisories.length === 1 ? 'y' : 'ies'}</span>
+          ${p.fixed_version ? `<span class="lang-tag">fix: ${escapeHtml(p.fixed_version)}</span>` : ''}
+          <span class="badge ${escapeHtml(p.severity)}">${escapeHtml(p.severity)}</span>
+        </div>
+      </div>
+      <div class="file-body" style="display:none;">
+        <div style="font-size:12px; color:var(--muted); margin-bottom:10px;">${escapeHtml(p.manifest)}</div>
+        <ul class="adv-list">
+          ${p.advisories.map(a => `<li><span class="badge ${escapeHtml(a.severity)}">${escapeHtml(a.severity)}</span>
+            <a href="${escapeHtml(a.url)}" target="_blank" rel="noopener">${escapeHtml(a.id)}</a>
+            ${a.cves.length ? `<span style="color:var(--muted);">${escapeHtml(a.cves.join(', '))}</span>` : ''}
+            ${escapeHtml(a.summary)}${a.fixed ? ` <span style="color:var(--clean);">(fixed in ${escapeHtml(a.fixed)})</span>` : ''}</li>`).join('')}
+        </ul>
+      </div>
+    </div>`).join('');
+}
+
+function renderFilteredFiles() {
+  if (!currentScanData) return;
+  const container = document.getElementById('filesContainer');
+  const search = document.getElementById('fileSearch').value.toLowerCase().trim();
+
+  let filtered = currentScanData.files.filter(f => {
+    const st = fileStatus(f);
+    if (currentFilter === 'VULN' && st !== 'vulnerable') return false;
+    if (currentFilter === 'REVIEW' && st !== 'unresolved' && st !== 'incomplete') return false;
+    if (currentFilter === 'CLEAN' && st !== 'clean') return false;
+    if (currentFilter === 'CRITICAL' && (f.severity_breakdown.CRITICAL || 0) === 0) return false;
+
+    if (search) {
+      const matchPath = f.relative_path.toLowerCase().includes(search);
+      const matchVuln = f.validated_findings.some(v => (v.category || '').toLowerCase().includes(search));
+      const matchCve = f.cve_matches.some(c => (c.cve_id || '').toLowerCase().includes(search));
+      return matchPath || matchVuln || matchCve;
+    }
+    return true;
+  });
+
+  if (!filtered.length) {
+    container.innerHTML = '<div style="text-align:center; padding:32px; color:var(--muted);">No matching files found.</div>';
+    return;
+  }
+
+  let html = '';
+  filtered.forEach(f => {
+    const unresolved = f.needs_context || [];
+    const isClean = fileStatus(f) === 'clean';
+    let statusBadge = fileStatus(f) === 'incomplete'
+      ? '<span class="badge HIGH">NOT ANALYSED</span>'
+      : '<span class="badge CLEAN">CLEAN</span>';
+    if (f.findings_count > 0) {
+      statusBadge = `<span class="badge CRITICAL">${f.findings_count} ${f.findings_count === 1 ? 'VULNERABILITY' : 'VULNERABILITIES'}</span>`;
+    }
+    if (unresolved.length) {
+      statusBadge = (f.findings_count > 0 ? statusBadge + ' ' : '') + `<span class="badge MEDIUM">${unresolved.length} UNRESOLVED</span>`;
+    }
+
+    let bodyContent = '';
+    if (isClean) {
+      bodyContent = '<div class="clean-state">Code is clean — no vulnerabilities confirmed.</div>';
+    } else {
+      f.validated_findings.forEach((v, idx) => {
+        const ex = (f.explanations && f.explanations[idx]) || {};
+        const adv = (f.advisories && f.advisories[idx]) || {};
+        const cweStr = (v.cwe_ids && v.cwe_ids.length) ? ` (${v.cwe_ids.join(', ')})` : '';
+
+        bodyContent += `
+          <div class="finding-box">
+            <div class="finding-header">
+              <span class="badge ${v.severity || 'LOW'}">${escapeHtml(v.severity || 'UNKNOWN')}</span>
+              <span class="finding-title">${escapeHtml(v.category || 'Vulnerability')}</span>
+              <span class="finding-cwe">${escapeHtml(cweStr)}</span>
+            </div>
+            <dl class="finding-dl">
+              <dt class="finding-dt">Why Flagged</dt>
+              <dd class="finding-dd">${escapeHtml(v.reasoning || v.evidence || '')}</dd>
+              ${v.validation ? `<dt class="finding-dt">Validation</dt><dd class="finding-dd">${escapeHtml(v.validation.category_name)} [${escapeHtml(v.validation.threat_category)}] · score ${v.validation.score}/100 · ${escapeHtml(v.validation.rule)}<br>
+                <span style="color:var(--muted); font-family:var(--mono); font-size:12px;">operation: ${escapeHtml(v.validation.parameters.operation_evidence.basis)} · attacker: ${escapeHtml(v.validation.parameters.attacker_control.value)} (${escapeHtml(v.validation.parameters.attacker_control.basis)}) · mitigation: ${escapeHtml(v.validation.parameters.mitigation.value)} · validator: ${escapeHtml(v.validation.parameters.llm_verdict.value)}${v.validation.parameters.llm_verdict.contradiction ? ' (contradicted itself)' : ''}</span></dd>` : ''}
+
+              ${ex.what_is_wrong ? `<dt class="finding-dt">Problem Analysis</dt><dd class="finding-dd">${escapeHtml(ex.what_is_wrong)}</dd>` : ''}
+              ${ex.why_dangerous ? `<dt class="finding-dt">Risk Impact</dt><dd class="finding-dd">${escapeHtml(ex.why_dangerous)}</dd>` : ''}
+              ${ex.attack_scenario ? `<dt class="finding-dt">Attack Scenario</dt><dd class="finding-dd">${escapeHtml(ex.attack_scenario)}</dd>` : ''}
+
+              ${adv.fix_description ? `<dt class="finding-dt" style="color:var(--clean);">Recommended Fix</dt><dd class="finding-dd">${escapeHtml(adv.fix_description)}</dd>` : ''}
+              ${adv.fixed_code ? `<dt class="finding-dt">Suggested Code</dt><dd class="finding-dd"><pre class="code">${escapeHtml(adv.fixed_code)}</pre></dd>` : ''}
+              ${adv.fix_warning ? `<dt class="finding-dt" style="color:var(--high);">Fix Check</dt><dd class="finding-dd">${escapeHtml(adv.fix_warning)}</dd>` : ''}
+              ${(adv.libraries && adv.libraries.length) ? `<dt class="finding-dt">Alternative Safe Libraries</dt><dd class="finding-dd">${escapeHtml(adv.libraries.join(', '))}</dd>` : ''}
+            </dl>
+          </div>
+        `;
+      });
+    }
+
+    if (unresolved.length) {
+      bodyContent += `<div style="margin-top:14px; font-size:12.5px; color:var(--medium);"><strong>Needs manual review (${unresolved.length}):</strong> ` +
+        'the validator could not decide even after the code-forensics agent re-examined these with wider CPG context. ' +
+        unresolved.map(u => escapeHtml((u.category || 'Finding') + ': ' + (u.reasoning || ''))).join(' | ') + `</div>`;
+    }
+
+    if (f.false_positives && f.false_positives.length) {
+      bodyContent += `<div style="margin-top:14px; font-size:12px; color:var(--muted);"><strong>Filtered False Positives (${f.false_positives.length}):</strong> ` +
+        f.false_positives.map(fp => escapeHtml(fp.category + ': ' + fp.reasoning)).join(' | ') + `</div>`;
+    }
+
+    if (f.errors && f.errors.length) {
+      bodyContent += `<div style="margin-top:10px; font-size:12px; color:var(--critical);"><strong>Warnings:</strong> ` +
+        f.errors.map(e => escapeHtml(e.agent + ': ' + e.error)).join('; ') + `</div>`;
+    }
+
+    html += `
+      <div class="file-card">
+        <div class="file-header" onclick="toggleCard(this)">
+          <div class="file-path">${escapeHtml(f.relative_path)}</div>
+          <div class="file-meta-badges">
+            <span class="lang-tag">${escapeHtml(f.language)}</span>
+            <span class="lang-tag">${f.lines_of_code} LOC</span>
+            ${statusBadge}
+          </div>
+        </div>
+        <div class="file-body">
+          ${bodyContent}
+        </div>
+      </div>
+    `;
+  });
+
+  container.innerHTML = html;
+}
+
+function toggleCard(headerElem) {
+  const body = headerElem.nextElementSibling;
+  body.style.display = (body.style.display === 'none') ? 'block' : 'none';
+}
+
+// ── Export Reports ──
+function exportReport(format) {
+  if (!currentScanData) return alert('No scan data available');
+  let dataStr = '';
+  let filename = `${currentScanData.project_name || 'audit'}_report.${format}`;
+  let mimeType = 'text/plain';
+
+  if (format === 'json') {
+    dataStr = JSON.stringify(currentScanData, null, 2);
+    mimeType = 'application/json';
+  } else if (format === 'md') {
+    dataStr = generateMarkdownReport(currentScanData);
+    mimeType = 'text/markdown';
+  }
+
+  const blob = new Blob([dataStr], { type: mimeType });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function generateMarkdownReport(r) {
+  let md = `# Vulnerability Audit Report — ${r.project_name}\n\n`;
+  md += `- **Source:** \`${r.source_path}\` (${r.source_type})\n`;
+  md += `- **Scanned:** ${r.scan_start_time} (${r.scan_duration_sec}s)\n`;
+  md += `- **Security Score:** **${r.security_score}/100** (Grade: \`${r.security_grade}\`)\n\n`;
+  md += `## Executive Summary\n\n`;
+  md += `| Metric | Count |\n|---|---|\n`;
+  md += `| Total Files Scanned | ${r.total_files_scanned} |\n`;
+  md += `| Total Lines of Code | ${(r.total_lines_of_code || 0).toLocaleString()} |\n`;
+  md += `| Critical | ${r.severity_counts.CRITICAL || 0} |\n`;
+  md += `| High | ${r.severity_counts.HIGH || 0} |\n`;
+  md += `| Medium | ${r.severity_counts.MEDIUM || 0} |\n`;
+  md += `| Low | ${r.severity_counts.LOW || 0} |\n`;
+  const statuses = r.files.map(fileStatus);
+  const count = s => statuses.filter(x => x === s).length;
+  md += `| Vulnerable Files | ${count('vulnerable')} |\n`;
+  md += `| Files Needing Manual Review | ${count('unresolved')} |\n`;
+  md += `| Files Not Analysed | ${count('incomplete')} |\n`;
+  md += `| Clean Files | ${count('clean')} |\n`;
+  const deps = r.dependencies || {};
+  if (deps.source) {
+    const vuln = deps.vulnerable || [];
+    md += `| Vulnerable Runtime Dependencies | ${vuln.filter(p => !p.dev).length} |\n`;
+    md += `| Vulnerable Dev Dependencies (not scored) | ${vuln.filter(p => p.dev).length} |\n`;
+  }
+  md += `\n`;
+
+  md += `## File Findings Detail\n\n`;
+  r.files.forEach(f => {
+    const st = fileStatus(f);
+    md += `### \`${f.relative_path}\` (${f.language.toUpperCase()})\n`;
+    if (st === 'clean') {
+      md += `*No security vulnerabilities confirmed.*\n\n`;
+    } else if (st === 'incomplete') {
+      md += `*Not analysed to a verdict, see warnings below.*\n\n`;
+    }
+    f.validated_findings.forEach((v, idx) => {
+      const ex = (f.explanations && f.explanations[idx]) || {};
+      const adv = (f.advisories && f.advisories[idx]) || {};
+      md += `#### [${v.severity || 'LOW'}] ${v.category || 'Finding'}\n`;
+      md += `- **Why Flagged:** ${v.reasoning || ''}\n`;
+      if (ex.what_is_wrong) md += `- **Problem:** ${ex.what_is_wrong}\n`;
+      if (ex.why_dangerous) md += `- **Risk:** ${ex.why_dangerous}\n`;
+      if (adv.fix_description) md += `- **Fix:** ${adv.fix_description}\n`;
+      if (adv.fixed_code) md += `\`\`\`\n${adv.fixed_code}\n\`\`\`\n`;
+      if (adv.fix_warning) md += `- **Fix Check:** ${adv.fix_warning}\n`;
+      md += `\n`;
+    });
+    if ((f.needs_context || []).length) {
+      md += `#### Needs manual review (${f.needs_context.length})\n`;
+      f.needs_context.forEach(u => {
+        md += `- **${u.category || 'Finding'}** [${u.severity || 'UNKNOWN'}]: ${u.reasoning || ''}\n`;
+      });
+      md += `\n`;
+    }
+    if ((f.errors || []).length) {
+      md += `- **Warnings:** ${f.errors.map(e => `${e.agent}: ${e.error}`).join('; ')}\n\n`;
+    }
+  });
+
+  if (deps.source) {
+    md += `## Dependencies\n\n`;
+    md += `${deps.packages_checked} pinned package(s) in ${deps.manifests.length} manifest(s) checked against ${deps.source}. ` +
+          `These versions have known advisories; whether the code reaches the vulnerable feature is not analysed. ` +
+          `Dev-only packages are listed but not scored.\n\n`;
+    if ((deps.vulnerable || []).length) {
+      md += `| Package | Version | Scope | Severity | Advisories | Upgrade to | Top advisory |\n|---|---|---|---|---|---|---|\n`;
+      deps.vulnerable.forEach(p => {
+        const top = p.advisories[0];
+        md += `| ${p.name} (${p.ecosystem}) | ${p.version} | ${p.dev ? 'dev' : 'runtime'} | ${p.severity} | ${p.advisories.length} | ` +
+              `${p.fixed_version || 'no fix yet'} | [${top.id}](${top.url}) ${top.summary.replace(/\|/g, '\\|')} |\n`;
+      });
+      md += `\n`;
+    }
+    if ((deps.unpinned || []).length) md += `- **Unpinned (not checked):** ${deps.unpinned.map(u => `${u.name} (${u.manifest})`).join(', ')}\n`;
+    if ((deps.errors || []).length) md += `- **Warnings:** ${deps.errors.join('; ')}\n`;
+  }
+  return md;
+}
+
+// ── Load Built-in Examples ──
+async function loadExamples() {
+  try {
+    const res = await fetch('/api/examples');
+    const data = await res.json();
+    const list = document.getElementById('examplesList');
+    list.innerHTML = '';
+    data.examples.forEach(ex => {
+      const card = document.createElement('div');
+      card.className = 'example-card';
+      card.innerHTML = `
+        <div class="example-title">${escapeHtml(ex.title)}</div>
+        <div class="example-desc">Click to run through the full analysis pipeline</div>
+      `;
+      card.onclick = () => {
+        const blob = new Blob([ex.code], { type: 'text/plain' });
+        // The scanner picks files by extension, so give the snippet a real one.
+        const ext = /\(C\)/.test(ex.title) || /#include|\bvoid\s+\w+\s*\(/.test(ex.code) ? '.c' : '.py';
+        const name = ex.title.replace(/[^a-zA-Z0-9_-]+/g, '_').replace(/_+$/, '') + ext;
+        uploadFiles([{ file: new File([blob], name), path: name }]);
+      };
+      list.appendChild(card);
+    });
+  } catch (err) {
+    console.error('Failed to load examples', err);
+  }
+}
+loadExamples();
+</script>
+</body>
+</html>

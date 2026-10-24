@@ -1,0 +1,43 @@
+{
+  "repo": "tests/benchmark/seeded_repo",
+  "notes": "Answer key for the seeded benchmark. Kept outside seeded_repo so the scanner never reads it. Code findings match on file + threat category (validation_guardrails taxonomy); lines are for humans.",
+  "expected": [
+    {"id": "SQLI-1",   "file": "app/users.py",         "lines": [13], "categories": ["INJECTION"],
+     "cwe": "CWE-89",  "desc": "f-string SQL with request.args value"},
+    {"id": "PATH-1",   "file": "app/downloads.py",     "lines": [12, 13], "categories": ["PATH_TRAVERSAL"],
+     "cwe": "CWE-22",  "desc": "send_file on os.path.join(UPLOAD_DIR, normpath(user input)); normpath does not stop ../"},
+    {"id": "CMDI-1",   "file": "app/network.py",       "lines": [11], "categories": ["INJECTION"],
+     "cwe": "CWE-78",  "desc": "os.popen with concatenated request.args host"},
+    {"id": "DESER-1",  "file": "app/sessions.py",      "lines": [12], "categories": ["DESERIALIZATION", "INJECTION"],
+     "cwe": "CWE-502", "desc": "pickle.loads on form data"},
+    {"id": "SECRET-1", "file": "app/auth.py",          "lines": [4, 5], "categories": ["SECRETS"],
+     "cwe": "CWE-798", "desc": "hard-coded SECRET_KEY and admin_password"},
+    {"id": "CRYPTO-1", "file": "app/auth.py",          "lines": [9], "categories": ["CRYPTO"],
+     "cwe": "CWE-327", "desc": "MD5 used for password hashing"},
+    {"id": "XSS-1",    "file": "web/static/search.js", "lines": [5], "categories": ["XSS"],
+     "cwe": "CWE-79",  "desc": "innerHTML with location.search value"}
+  ],
+  "must_not_flag": [
+    {"file": "app/thumbnails.py", "categories": ["PATH_TRAVERSAL", "MEMORY_CORRUPTION", "MEMORY_LIFECYCLE"],
+     "desc": "Image.open(io.BytesIO(upload)): in-memory bytes, no path; Python manages memory"},
+    {"file": "app/safe_ops.py", "categories": ["*"],
+     "desc": "parameterised SQL, validated hostname + argv list, resolve()+is_relative_to check, yaml.safe_load, json.loads, sha256 checksum"},
+    {"file": "web/static/profile.js", "categories": ["*"],
+     "desc": "textContent and encodeURIComponent only"}
+  ],
+  "tolerated": [
+    {"file": "app/thumbnails.py", "categories": ["RESOURCE_EXHAUSTION"],
+     "desc": "unbounded upload size is arguable; neither credited nor penalised"}
+  ],
+  "expected_clean": ["app/safe_ops.py", "web/static/profile.js", "app/__init__.py"],
+  "dependencies": {
+    "vulnerable": [
+      {"ecosystem": "PyPI", "name": "flask",    "version": "2.2.2",   "dev": false, "cve": "CVE-2023-30861"},
+      {"ecosystem": "PyPI", "name": "pillow",   "version": "10.1.0",  "dev": false, "cve": "CVE-2023-50447"},
+      {"ecosystem": "PyPI", "name": "pyyaml",   "version": "5.3.1",   "dev": false, "cve": "CVE-2020-14343"},
+      {"ecosystem": "npm",  "name": "lodash",   "version": "4.17.15", "dev": false, "cve": "CVE-2020-8203"},
+      {"ecosystem": "npm",  "name": "minimist", "version": "1.2.5",   "dev": true,  "cve": "CVE-2021-44906"}
+    ],
+    "unpinned": ["requests"]
+  }
+}

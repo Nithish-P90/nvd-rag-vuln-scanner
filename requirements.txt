@@ -1,0 +1,28 @@
+# Core Dependencies
+ollama
+qdrant-client
+sentence-transformers
+nvdlib
+python-dotenv
+
+# Web UI Backend
+fastapi
+uvicorn
+python-multipart
+pydantic
+
+# Tree-Sitter AST Parsers
+tree-sitter
+tree-sitter-c
+tree-sitter-cpp
+tree-sitter-python
+tree-sitter-javascript
+tree-sitter-typescript
+tree-sitter-java
+tree-sitter-go
+tree-sitter-rust
+tree-sitter-php
+
+# Code Property Graph (Joern is an external tool, not a pip package)
+# Install Joern: https://joern.io  (set JOERN_HOME) — or have Docker available;
+# agents/joern_cpg falls back to ghcr.io/joernio/joern, then to tree-sitter.

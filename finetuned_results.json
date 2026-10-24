@@ -1,0 +1,908 @@
+{
+  "model": "validation-agent",
+  "accuracy": 91.33333333333333,
+  "correct": 137,
+  "total": 150,
+  "records": [
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-119",
+      "source": "primevul"
+    },
+    {
+      "actual": "FALSE_POSITIVE",
+      "predicted": "FALSE_POSITIVE",
+      "cwe": "CWE-134",
+      "source": "juliet"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-690",
+      "source": "juliet"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-125",
+      "source": "primevul"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-200",
+      "source": "primevul"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-114",
+      "source": "juliet"
+    },
+    {
+      "actual": "FALSE_POSITIVE",
+      "predicted": "FALSE_POSITIVE",
+      "cwe": "CWE-['CWE-399']",
+      "source": "primevul"
+    },
+    {
+      "actual": "FALSE_POSITIVE",
+      "predicted": "FALSE_POSITIVE",
+      "cwe": "CWE-119",
+      "source": "primevul"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-20",
+      "source": "primevul"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-200",
+      "source": "primevul"
+    },
+    {
+      "actual": "FALSE_POSITIVE",
+      "predicted": "FALSE_POSITIVE",
+      "cwe": "CWE-590",
+      "source": "juliet"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-119",
+      "source": "bigvul"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-191",
+      "source": "juliet"
+    },
+    {
+      "actual": "NEEDS_CONTEXT",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-119",
+      "source": "devign"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-125",
+      "source": "primevul"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "FALSE_POSITIVE",
+      "cwe": "CWE-476",
+      "source": "primevul"
+    },
+    {
+      "actual": "FALSE_POSITIVE",
+      "predicted": "FALSE_POSITIVE",
+      "cwe": "CWE-121",
+      "source": "juliet"
+    },
+    {
+      "actual": "FALSE_POSITIVE",
+      "predicted": "FALSE_POSITIVE",
+      "cwe": "CWE-401",
+      "source": "juliet"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-20",
+      "source": "primevul"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-416",
+      "source": "primevul"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-127",
+      "source": "juliet"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-191",
+      "source": "juliet"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-20",
+      "source": "bigvul"
+    },
+    {
+      "actual": "NEEDS_CONTEXT",
+      "predicted": "NEEDS_CONTEXT",
+      "cwe": "CWE-190",
+      "source": "devign"
+    },
+    {
+      "actual": "FALSE_POSITIVE",
+      "predicted": "FALSE_POSITIVE",
+      "cwe": "CWE-388",
+      "source": "primevul"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-119",
+      "source": "primevul"
+    },
+    {
+      "actual": "FALSE_POSITIVE",
+      "predicted": "FALSE_POSITIVE",
+      "cwe": "CWE-119",
+      "source": "primevul"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-78",
+      "source": "juliet"
+    },
+    {
+      "actual": "FALSE_POSITIVE",
+      "predicted": "FALSE_POSITIVE",
+      "cwe": "CWE-124",
+      "source": "juliet"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-191",
+      "source": "juliet"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-909",
+      "source": "primevul"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-310",
+      "source": "bigvul"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-476",
+      "source": "bigvul"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-401",
+      "source": "juliet"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-190",
+      "source": "juliet"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-119",
+      "source": "primevul"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-127",
+      "source": "juliet"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-190",
+      "source": "juliet"
+    },
+    {
+      "actual": "FALSE_POSITIVE",
+      "predicted": "FALSE_POSITIVE",
+      "cwe": "CWE-399",
+      "source": "primevul"
+    },
+    {
+      "actual": "FALSE_POSITIVE",
+      "predicted": "FALSE_POSITIVE",
+      "cwe": "CWE-200",
+      "source": "primevul"
+    },
+    {
+      "actual": "NEEDS_CONTEXT",
+      "predicted": "NEEDS_CONTEXT",
+      "cwe": "CWE-416",
+      "source": "devign"
+    },
+    {
+      "actual": "FALSE_POSITIVE",
+      "predicted": "FALSE_POSITIVE",
+      "cwe": "CWE-416",
+      "source": "primevul"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-20",
+      "source": "primevul"
+    },
+    {
+      "actual": "FALSE_POSITIVE",
+      "predicted": "FALSE_POSITIVE",
+      "cwe": "CWE-269",
+      "source": "primevul"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-20",
+      "source": "primevul"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-121",
+      "source": "juliet"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-416",
+      "source": "primevul"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-787",
+      "source": "primevul"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-20",
+      "source": "bigvul"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-119",
+      "source": "primevul"
+    },
+    {
+      "actual": "FALSE_POSITIVE",
+      "predicted": "FALSE_POSITIVE",
+      "cwe": "CWE-191",
+      "source": "juliet"
+    },
+    {
+      "actual": "NEEDS_CONTEXT",
+      "predicted": "NEEDS_CONTEXT",
+      "cwe": "CWE-190",
+      "source": "devign"
+    },
+    {
+      "actual": "FALSE_POSITIVE",
+      "predicted": "FALSE_POSITIVE",
+      "cwe": "CWE-134",
+      "source": "juliet"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-264",
+      "source": "primevul"
+    },
+    {
+      "actual": "FALSE_POSITIVE",
+      "predicted": "FALSE_POSITIVE",
+      "cwe": "CWE-264",
+      "source": "primevul"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-416",
+      "source": "bigvul"
+    },
+    {
+      "actual": "FALSE_POSITIVE",
+      "predicted": "FALSE_POSITIVE",
+      "cwe": "CWE-['CWE-476']",
+      "source": "primevul"
+    },
+    {
+      "actual": "FALSE_POSITIVE",
+      "predicted": "FALSE_POSITIVE",
+      "cwe": "CWE-190",
+      "source": "juliet"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-310",
+      "source": "bigvul"
+    },
+    {
+      "actual": "NEEDS_CONTEXT",
+      "predicted": "NEEDS_CONTEXT",
+      "cwe": "CWE-362",
+      "source": "devign"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-119",
+      "source": "bigvul"
+    },
+    {
+      "actual": "FALSE_POSITIVE",
+      "predicted": "PARSE_ERROR",
+      "cwe": "CWE-124",
+      "source": "juliet"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-362",
+      "source": "primevul"
+    },
+    {
+      "actual": "FALSE_POSITIVE",
+      "predicted": "FALSE_POSITIVE",
+      "cwe": "CWE-590",
+      "source": "juliet"
+    },
+    {
+      "actual": "FALSE_POSITIVE",
+      "predicted": "FALSE_POSITIVE",
+      "cwe": "CWE-190",
+      "source": "juliet"
+    },
+    {
+      "actual": "NEEDS_CONTEXT",
+      "predicted": "NEEDS_CONTEXT",
+      "cwe": "CWE-476",
+      "source": "devign"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-476",
+      "source": "primevul"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-17",
+      "source": "bigvul"
+    },
+    {
+      "actual": "FALSE_POSITIVE",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-20",
+      "source": "primevul"
+    },
+    {
+      "actual": "FALSE_POSITIVE",
+      "predicted": "FALSE_POSITIVE",
+      "cwe": "CWE-126",
+      "source": "juliet"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-362",
+      "source": "primevul"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-119",
+      "source": "primevul"
+    },
+    {
+      "actual": "NEEDS_CONTEXT",
+      "predicted": "NEEDS_CONTEXT",
+      "cwe": "CWE-362",
+      "source": "devign"
+    },
+    {
+      "actual": "FALSE_POSITIVE",
+      "predicted": "FALSE_POSITIVE",
+      "cwe": "CWE-195",
+      "source": "juliet"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-119",
+      "source": "primevul"
+    },
+    {
+      "actual": "FALSE_POSITIVE",
+      "predicted": "FALSE_POSITIVE",
+      "cwe": "CWE-122",
+      "source": "juliet"
+    },
+    {
+      "actual": "FALSE_POSITIVE",
+      "predicted": "FALSE_POSITIVE",
+      "cwe": "CWE-189",
+      "source": "primevul"
+    },
+    {
+      "actual": "NEEDS_CONTEXT",
+      "predicted": "NEEDS_CONTEXT",
+      "cwe": "CWE-416",
+      "source": "devign"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-416",
+      "source": "bigvul"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-['CWE-79']",
+      "source": "primevul"
+    },
+    {
+      "actual": "NEEDS_CONTEXT",
+      "predicted": "NEEDS_CONTEXT",
+      "cwe": "CWE-476",
+      "source": "devign"
+    },
+    {
+      "actual": "NEEDS_CONTEXT",
+      "predicted": "FALSE_POSITIVE",
+      "cwe": "CWE-190",
+      "source": "devign"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-119",
+      "source": "bigvul"
+    },
+    {
+      "actual": "FALSE_POSITIVE",
+      "predicted": "FALSE_POSITIVE",
+      "cwe": "CWE-190",
+      "source": "juliet"
+    },
+    {
+      "actual": "FALSE_POSITIVE",
+      "predicted": "FALSE_POSITIVE",
+      "cwe": "CWE-125",
+      "source": "primevul"
+    },
+    {
+      "actual": "NEEDS_CONTEXT",
+      "predicted": "FALSE_POSITIVE",
+      "cwe": "CWE-119",
+      "source": "devign"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-121",
+      "source": "juliet"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-119",
+      "source": "bigvul"
+    },
+    {
+      "actual": "FALSE_POSITIVE",
+      "predicted": "FALSE_POSITIVE",
+      "cwe": "CWE-190",
+      "source": "juliet"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-119",
+      "source": "primevul"
+    },
+    {
+      "actual": "FALSE_POSITIVE",
+      "predicted": "FALSE_POSITIVE",
+      "cwe": "CWE-134",
+      "source": "juliet"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-['CWE-416']",
+      "source": "primevul"
+    },
+    {
+      "actual": "FALSE_POSITIVE",
+      "predicted": "FALSE_POSITIVE",
+      "cwe": "CWE-134",
+      "source": "juliet"
+    },
+    {
+      "actual": "NEEDS_CONTEXT",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-119",
+      "source": "devign"
+    },
+    {
+      "actual": "FALSE_POSITIVE",
+      "predicted": "FALSE_POSITIVE",
+      "cwe": "CWE-191",
+      "source": "juliet"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-134",
+      "source": "juliet"
+    },
+    {
+      "actual": "FALSE_POSITIVE",
+      "predicted": "FALSE_POSITIVE",
+      "cwe": "CWE-134",
+      "source": "juliet"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-20",
+      "source": "primevul"
+    },
+    {
+      "actual": "FALSE_POSITIVE",
+      "predicted": "FALSE_POSITIVE",
+      "cwe": "CWE-758",
+      "source": "juliet"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-125",
+      "source": "primevul"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-399",
+      "source": "primevul"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-119",
+      "source": "bigvul"
+    },
+    {
+      "actual": "FALSE_POSITIVE",
+      "predicted": "PARSE_ERROR",
+      "cwe": "CWE-124",
+      "source": "juliet"
+    },
+    {
+      "actual": "FALSE_POSITIVE",
+      "predicted": "FALSE_POSITIVE",
+      "cwe": "CWE-134",
+      "source": "juliet"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-119",
+      "source": "primevul"
+    },
+    {
+      "actual": "FALSE_POSITIVE",
+      "predicted": "FALSE_POSITIVE",
+      "cwe": "CWE-758",
+      "source": "juliet"
+    },
+    {
+      "actual": "FALSE_POSITIVE",
+      "predicted": "FALSE_POSITIVE",
+      "cwe": "CWE-122",
+      "source": "juliet"
+    },
+    {
+      "actual": "FALSE_POSITIVE",
+      "predicted": "FALSE_POSITIVE",
+      "cwe": "CWE-362",
+      "source": "primevul"
+    },
+    {
+      "actual": "FALSE_POSITIVE",
+      "predicted": "FALSE_POSITIVE",
+      "cwe": "CWE-127",
+      "source": "juliet"
+    },
+    {
+      "actual": "NEEDS_CONTEXT",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-119",
+      "source": "devign"
+    },
+    {
+      "actual": "NEEDS_CONTEXT",
+      "predicted": "NEEDS_CONTEXT",
+      "cwe": "CWE-119",
+      "source": "devign"
+    },
+    {
+      "actual": "NEEDS_CONTEXT",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-119",
+      "source": "devign"
+    },
+    {
+      "actual": "FALSE_POSITIVE",
+      "predicted": "FALSE_POSITIVE",
+      "cwe": "CWE-134",
+      "source": "juliet"
+    },
+    {
+      "actual": "FALSE_POSITIVE",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-125",
+      "source": "primevul"
+    },
+    {
+      "actual": "FALSE_POSITIVE",
+      "predicted": "FALSE_POSITIVE",
+      "cwe": "CWE-200",
+      "source": "primevul"
+    },
+    {
+      "actual": "NEEDS_CONTEXT",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-119",
+      "source": "devign"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-127",
+      "source": "juliet"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-20",
+      "source": "primevul"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-119",
+      "source": "primevul"
+    },
+    {
+      "actual": "FALSE_POSITIVE",
+      "predicted": "FALSE_POSITIVE",
+      "cwe": "CWE-690",
+      "source": "juliet"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-20",
+      "source": "bigvul"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-189",
+      "source": "bigvul"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-['CWE-125']",
+      "source": "primevul"
+    },
+    {
+      "actual": "FALSE_POSITIVE",
+      "predicted": "FALSE_POSITIVE",
+      "cwe": "CWE-119",
+      "source": "primevul"
+    },
+    {
+      "actual": "NEEDS_CONTEXT",
+      "predicted": "NEEDS_CONTEXT",
+      "cwe": "CWE-190",
+      "source": "devign"
+    },
+    {
+      "actual": "FALSE_POSITIVE",
+      "predicted": "FALSE_POSITIVE",
+      "cwe": "CWE-762",
+      "source": "juliet"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-190",
+      "source": "juliet"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-119",
+      "source": "primevul"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-459",
+      "source": "juliet"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-401",
+      "source": "juliet"
+    },
+    {
+      "actual": "NEEDS_CONTEXT",
+      "predicted": "FALSE_POSITIVE",
+      "cwe": "CWE-190",
+      "source": "devign"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-78",
+      "source": "juliet"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-197",
+      "source": "juliet"
+    },
+    {
+      "actual": "FALSE_POSITIVE",
+      "predicted": "FALSE_POSITIVE",
+      "cwe": "CWE-190",
+      "source": "juliet"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-20",
+      "source": "bigvul"
+    },
+    {
+      "actual": "NEEDS_CONTEXT",
+      "predicted": "NEEDS_CONTEXT",
+      "cwe": "CWE-476",
+      "source": "devign"
+    },
+    {
+      "actual": "FALSE_POSITIVE",
+      "predicted": "FALSE_POSITIVE",
+      "cwe": "CWE-23",
+      "source": "juliet"
+    },
+    {
+      "actual": "FALSE_POSITIVE",
+      "predicted": "FALSE_POSITIVE",
+      "cwe": "CWE-758",
+      "source": "juliet"
+    },
+    {
+      "actual": "FALSE_POSITIVE",
+      "predicted": "FALSE_POSITIVE",
+      "cwe": "CWE-124",
+      "source": "juliet"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-758",
+      "source": "juliet"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-125",
+      "source": "bigvul"
+    },
+    {
+      "actual": "NEEDS_CONTEXT",
+      "predicted": "NEEDS_CONTEXT",
+      "cwe": "CWE-362",
+      "source": "devign"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-125",
+      "source": "primevul"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-121",
+      "source": "juliet"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-189",
+      "source": "bigvul"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-119",
+      "source": "bigvul"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-190",
+      "source": "juliet"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-369",
+      "source": "primevul"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-399",
+      "source": "bigvul"
+    },
+    {
+      "actual": "CONFIRMED",
+      "predicted": "CONFIRMED",
+      "cwe": "CWE-310",
+      "source": "primevul"
+    }
+  ]
+}

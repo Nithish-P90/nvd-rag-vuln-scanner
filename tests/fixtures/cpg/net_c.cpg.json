@@ -1,0 +1,894 @@
+{
+ "methods": [
+  {
+   "file": "net.c",
+   "name": "copy_name",
+   "fullName": "copy_name",
+   "signature": "void(char*,char*)",
+   "line": 5,
+   "end": 7,
+   "params": [
+    {
+     "name": "dst",
+     "type": "char*",
+     "order": 1
+    },
+    {
+     "name": "src",
+     "type": "char*",
+     "order": 2
+    }
+   ],
+   "locals": [],
+   "calls": [
+    {
+     "name": "strcpy",
+     "code": "strcpy(dst, src)",
+     "line": 6,
+     "callee": "strcpy",
+     "args": [
+      "dst",
+      "src"
+     ]
+    }
+   ],
+   "controls": [],
+   "returns": []
+  },
+  {
+   "file": "net.c",
+   "name": "<global>",
+   "fullName": "net.c:<global>",
+   "signature": "",
+   "line": 1,
+   "end": 25,
+   "params": [],
+   "locals": [],
+   "calls": [],
+   "controls": [
+    {
+     "type": "IF",
+     "code": "if (n <= 0)\n        return;",
+     "line": 14,
+     "end": 15,
+     "cond": [
+      "n <= 0"
+     ]
+    }
+   ],
+   "returns": [
+    {
+     "code": "return;",
+     "line": 15
+    },
+    {
+     "code": "return 0;",
+     "line": 24
+    }
+   ]
+  },
+  {
+   "file": "net.c",
+   "name": "handle",
+   "fullName": "handle",
+   "signature": "void(int)",
+   "line": 9,
+   "end": 20,
+   "params": [
+    {
+     "name": "sock",
+     "type": "int",
+     "order": 1
+    }
+   ],
+   "locals": [
+    {
+     "name": "buf",
+     "type": "char[64]",
+     "line": 10,
+     "code": "char buf[64]"
+    },
+    {
+     "name": "name",
+     "type": "char[16]",
+     "line": 11,
+     "code": "char name[16]"
+    },
+    {
+     "name": "p",
+     "type": "char*",
+     "line": 12,
+     "code": "char *p"
+    },
+    {
+     "name": "n",
+     "type": "int",
+     "line": 13,
+     "code": "int n"
+    },
+    {
+     "name": "f",
+     "type": "FILE*",
+     "line": 19,
+     "code": "FILE *f"
+    }
+   ],
+   "calls": [
+    {
+     "name": "<operator>.assignment",
+     "code": "buf[64]",
+     "line": 10,
+     "callee": "<operator>.assignment",
+     "args": [
+      "buf",
+      "buf[64]"
+     ]
+    },
+    {
+     "name": "<operator>.assignment",
+     "code": "name[16]",
+     "line": 11,
+     "callee": "<operator>.assignment",
+     "args": [
+      "name",
+      "name[16]"
+     ]
+    },
+    {
+     "name": "<operator>.assignment",
+     "code": "p = malloc(32)",
+     "line": 12,
+     "callee": "<operator>.assignment",
+     "args": [
+      "p",
+      "malloc(32)"
+     ]
+    },
+    {
+     "name": "<operator>.assignment",
+     "code": "n = recv(sock, buf, sizeof(buf), 0)",
+     "line": 13,
+     "callee": "<operator>.assignment",
+     "args": [
+      "n",
+      "recv(sock, buf, sizeof(buf), 0)"
+     ]
+    },
+    {
+     "name": "copy_name",
+     "code": "copy_name(name, buf)",
+     "line": 16,
+     "callee": "copy_name",
+     "args": [
+      "name",
+      "buf"
+     ]
+    },
+    {
+     "name": "free",
+     "code": "free(p)",
+     "line": 17,
+     "callee": "free",
+     "args": [
+      "p"
+     ]
+    },
+    {
+     "name": "printf",
+     "code": "printf(\"%s\", p)",
+     "line": 18,
+     "callee": "printf",
+     "args": [
+      "\"%s\"",
+      "p"
+     ]
+    },
+    {
+     "name": "<operator>.assignment",
+     "code": "f = fopen(buf, \"r\")",
+     "line": 19,
+     "callee": "<operator>.assignment",
+     "args": [
+      "f",
+      "fopen(buf, \"r\")"
+     ]
+    },
+    {
+     "name": "<operator>.alloc",
+     "code": "buf[64]",
+     "line": 10,
+     "callee": "<operator>.alloc",
+     "args": [
+      "char[64]",
+      "64"
+     ]
+    },
+    {
+     "name": "<operator>.alloc",
+     "code": "name[16]",
+     "line": 11,
+     "callee": "<operator>.alloc",
+     "args": [
+      "char[16]",
+      "16"
+     ]
+    },
+    {
+     "name": "malloc",
+     "code": "malloc(32)",
+     "line": 12,
+     "callee": "malloc",
+     "args": [
+      "32"
+     ]
+    },
+    {
+     "name": "recv",
+     "code": "recv(sock, buf, sizeof(buf), 0)",
+     "line": 13,
+     "callee": "recv",
+     "args": [
+      "sock",
+      "buf",
+      "sizeof(buf)",
+      "0"
+     ]
+    },
+    {
+     "name": "<operator>.lessEqualsThan",
+     "code": "n <= 0",
+     "line": 14,
+     "callee": "<operator>.lessEqualsThan",
+     "args": [
+      "n",
+      "0"
+     ]
+    },
+    {
+     "name": "fopen",
+     "code": "fopen(buf, \"r\")",
+     "line": 19,
+     "callee": "fopen",
+     "args": [
+      "buf",
+      "\"r\""
+     ]
+    },
+    {
+     "name": "<operator>.sizeOf",
+     "code": "sizeof(buf)",
+     "line": 13,
+     "callee": "<operator>.sizeOf",
+     "args": [
+      "buf"
+     ]
+    }
+   ],
+   "controls": [
+    {
+     "type": "IF",
+     "code": "if (n <= 0)\n        return;",
+     "line": 14,
+     "end": 15,
+     "cond": [
+      "n <= 0"
+     ]
+    }
+   ],
+   "returns": [
+    {
+     "code": "return;",
+     "line": 15
+    }
+   ]
+  },
+  {
+   "file": "net.c",
+   "name": "main",
+   "fullName": "main",
+   "signature": "int(int,char**)",
+   "line": 22,
+   "end": 25,
+   "params": [
+    {
+     "name": "argc",
+     "type": "int",
+     "order": 1
+    },
+    {
+     "name": "argv",
+     "type": "char**",
+     "order": 2
+    }
+   ],
+   "locals": [],
+   "calls": [
+    {
+     "name": "handle",
+     "code": "handle(atoi(argv[1]))",
+     "line": 23,
+     "callee": "handle",
+     "args": [
+      "atoi(argv[1])"
+     ]
+    },
+    {
+     "name": "atoi",
+     "code": "atoi(argv[1])",
+     "line": 23,
+     "callee": "atoi",
+     "args": [
+      "argv[1]"
+     ]
+    },
+    {
+     "name": "<operator>.indirectIndexAccess",
+     "code": "argv[1]",
+     "line": 23,
+     "callee": "<operator>.indirectIndexAccess",
+     "args": [
+      "argv",
+      "1"
+     ]
+    }
+   ],
+   "controls": [],
+   "returns": [
+    {
+     "code": "return 0;",
+     "line": 24
+    }
+   ]
+  },
+  {
+   "file": "<includes>",
+   "name": "<global>",
+   "fullName": "<includes>:<global>",
+   "signature": "",
+   "line": 1,
+   "end": null,
+   "params": [],
+   "locals": [],
+   "calls": [],
+   "controls": [],
+   "returns": []
+  }
+ ],
+ "ddg": [
+  [
+   "net.c",
+   "copy_name",
+   6,
+   5,
+   "strcpy(dst, src)"
+  ],
+  [
+   "net.c",
+   "handle",
+   10,
+   9,
+   "buf[64]"
+  ],
+  [
+   "net.c",
+   "handle",
+   11,
+   9,
+   "name[16]"
+  ],
+  [
+   "net.c",
+   "handle",
+   12,
+   9,
+   "p = malloc(32)"
+  ],
+  [
+   "net.c",
+   "handle",
+   12,
+   9,
+   "malloc(32)"
+  ],
+  [
+   "net.c",
+   "handle",
+   13,
+   9,
+   "n = recv(sock, buf, sizeof(buf), 0)"
+  ],
+  [
+   "net.c",
+   "handle",
+   13,
+   9,
+   "recv(sock, buf, sizeof(buf), 0)"
+  ],
+  [
+   "net.c",
+   "handle",
+   14,
+   9,
+   "n <= 0"
+  ],
+  [
+   "net.c",
+   "main",
+   23,
+   22,
+   "handle(atoi(argv[1]))"
+  ],
+  [
+   "net.c",
+   "main",
+   23,
+   22,
+   "atoi(argv[1])"
+  ],
+  [
+   "net.c",
+   "main",
+   23,
+   22,
+   "argv[1]"
+  ],
+  [
+   "net.c",
+   "copy_name",
+   6,
+   5,
+   "dst"
+  ],
+  [
+   "net.c",
+   "copy_name",
+   6,
+   5,
+   "src"
+  ],
+  [
+   "net.c",
+   "handle",
+   10,
+   13,
+   "buf"
+  ],
+  [
+   "net.c",
+   "handle",
+   10,
+   9,
+   "char[64]"
+  ],
+  [
+   "net.c",
+   "handle",
+   11,
+   16,
+   "name"
+  ],
+  [
+   "net.c",
+   "handle",
+   11,
+   9,
+   "name"
+  ],
+  [
+   "net.c",
+   "handle",
+   11,
+   9,
+   "char[16]"
+  ],
+  [
+   "net.c",
+   "handle",
+   12,
+   17,
+   "p"
+  ],
+  [
+   "net.c",
+   "handle",
+   12,
+   9,
+   "p"
+  ],
+  [
+   "net.c",
+   "handle",
+   13,
+   14,
+   "n"
+  ],
+  [
+   "net.c",
+   "handle",
+   13,
+   9,
+   "sock"
+  ],
+  [
+   "net.c",
+   "handle",
+   13,
+   16,
+   "buf"
+  ],
+  [
+   "net.c",
+   "handle",
+   13,
+   9,
+   "buf"
+  ],
+  [
+   "net.c",
+   "handle",
+   14,
+   9,
+   "n"
+  ],
+  [
+   "net.c",
+   "handle",
+   16,
+   19,
+   "buf"
+  ],
+  [
+   "net.c",
+   "handle",
+   17,
+   18,
+   "p"
+  ],
+  [
+   "net.c",
+   "copy_name",
+   5,
+   6,
+   ""
+  ],
+  [
+   "net.c",
+   "net.c:<global>",
+   1,
+   9,
+   ""
+  ],
+  [
+   "net.c",
+   "net.c:<global>",
+   1,
+   22,
+   ""
+  ],
+  [
+   "net.c",
+   "net.c:<global>",
+   1,
+   5,
+   ""
+  ],
+  [
+   "net.c",
+   "handle",
+   9,
+   19,
+   ""
+  ],
+  [
+   "net.c",
+   "handle",
+   9,
+   14,
+   ""
+  ],
+  [
+   "net.c",
+   "handle",
+   9,
+   11,
+   ""
+  ],
+  [
+   "net.c",
+   "handle",
+   9,
+   13,
+   ""
+  ],
+  [
+   "net.c",
+   "handle",
+   9,
+   10,
+   ""
+  ],
+  [
+   "net.c",
+   "handle",
+   9,
+   16,
+   ""
+  ],
+  [
+   "net.c",
+   "handle",
+   9,
+   18,
+   ""
+  ],
+  [
+   "net.c",
+   "handle",
+   9,
+   12,
+   ""
+  ],
+  [
+   "net.c",
+   "handle",
+   9,
+   15,
+   ""
+  ],
+  [
+   "net.c",
+   "handle",
+   9,
+   17,
+   ""
+  ],
+  [
+   "net.c",
+   "main",
+   22,
+   24,
+   ""
+  ],
+  [
+   "net.c",
+   "main",
+   22,
+   23,
+   ""
+  ],
+  [
+   "net.c",
+   "copy_name",
+   5,
+   6,
+   "dst"
+  ],
+  [
+   "net.c",
+   "copy_name",
+   5,
+   6,
+   "src"
+  ],
+  [
+   "net.c",
+   "handle",
+   9,
+   13,
+   "sock"
+  ],
+  [
+   "net.c",
+   "main",
+   22,
+   23,
+   "argv"
+  ],
+  [
+   "net.c",
+   "handle",
+   15,
+   9,
+   "<RET>"
+  ],
+  [
+   "net.c",
+   "main",
+   24,
+   22,
+   "<RET>"
+  ]
+ ],
+ "cdg": [
+  [
+   "net.c",
+   "handle",
+   14,
+   19
+  ],
+  [
+   "net.c",
+   "handle",
+   14,
+   18
+  ],
+  [
+   "net.c",
+   "handle",
+   14,
+   17
+  ],
+  [
+   "net.c",
+   "handle",
+   14,
+   16
+  ],
+  [
+   "net.c",
+   "handle",
+   14,
+   15
+  ]
+ ],
+ "flows": [
+  [
+   [
+    "net.c",
+    23,
+    "atoi(argv[1])"
+   ],
+   [
+    "net.c",
+    9,
+    "int sock"
+   ],
+   [
+    "net.c",
+    13,
+    "sock"
+   ],
+   [
+    "net.c",
+    16,
+    "buf"
+   ],
+   [
+    "net.c",
+    5,
+    "char *src"
+   ],
+   [
+    "net.c",
+    6,
+    "src"
+   ],
+   [
+    "net.c",
+    5,
+    "char *src"
+   ],
+   [
+    "net.c",
+    16,
+    "buf"
+   ],
+   [
+    "net.c",
+    19,
+    "buf"
+   ]
+  ],
+  [
+   [
+    "net.c",
+    23,
+    "argv[1]"
+   ],
+   [
+    "net.c",
+    9,
+    "int sock"
+   ],
+   [
+    "net.c",
+    13,
+    "sock"
+   ],
+   [
+    "net.c",
+    16,
+    "buf"
+   ],
+   [
+    "net.c",
+    5,
+    "char *src"
+   ],
+   [
+    "net.c",
+    6,
+    "src"
+   ],
+   [
+    "net.c",
+    5,
+    "char *src"
+   ],
+   [
+    "net.c",
+    16,
+    "buf"
+   ],
+   [
+    "net.c",
+    19,
+    "buf"
+   ]
+  ],
+  [
+   [
+    "net.c",
+    23,
+    "atoi(argv[1])"
+   ],
+   [
+    "net.c",
+    9,
+    "int sock"
+   ],
+   [
+    "net.c",
+    13,
+    "sock"
+   ],
+   [
+    "net.c",
+    16,
+    "buf"
+   ],
+   [
+    "net.c",
+    5,
+    "char *src"
+   ],
+   [
+    "net.c",
+    6,
+    "src"
+   ]
+  ],
+  [
+   [
+    "net.c",
+    23,
+    "argv[1]"
+   ],
+   [
+    "net.c",
+    9,
+    "int sock"
+   ],
+   [
+    "net.c",
+    13,
+    "sock"
+   ],
+   [
+    "net.c",
+    16,
+    "buf"
+   ],
+   [
+    "net.c",
+    5,
+    "char *src"
+   ],
+   [
+    "net.c",
+    6,
+    "src"
+   ]
+  ]
+ ]
+}
